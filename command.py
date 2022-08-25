@@ -8,7 +8,10 @@ def parseInput():
     parser.add_argument("-sch","--schema",type=str)
     parser.add_argument("-pk","--primaryKey",type=str)
     parser.add_argument("-val","--value",type=str)  
-      
+    parser.add_argument("-dp","--data_base",type=str)
+    parser.add_argument("-tb","--table",type=str)  
+    
+
     return parser.parse_args() 
 
 
@@ -17,7 +20,12 @@ if __name__=='__main__':
     data= None
     if(args.schema is not None):
         data=json.loads(args.schema)
+
     if args.command=="create":
+        f=open('jsonschema.json',"r")
+        #print(f.read())
+        data=json.load(f)
+        print(data)
         commands.create(data)
     elif args.command=="set":
         commands.set(5,3)
