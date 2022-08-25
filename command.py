@@ -1,19 +1,22 @@
-from asyncio.windows_events import NULL
-import imp
 import json
 import argparse
-from re import A
 import commands
 
-
-if __name__=='__main__':
+def parseInput():
     parser=argparse.ArgumentParser()
     parser.add_argument("-cmd","--command",type=str)
     parser.add_argument("-sch","--schema",type=str)
-    args=parser.parse_args() 
+    parser.add_argument("-pk","--primaryKey",type=str)
+    parser.add_argument("-val","--value",type=str)  
+      
+    return parser.parse_args() 
+
+
+if __name__=='__main__':
+    args=parseInput()
+    data= None
     if(args.schema is not None):
         data=json.loads(args.schema)
-
     if args.command=="create":
         commands.create(data)
     elif args.command=="set":
