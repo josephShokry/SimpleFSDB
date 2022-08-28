@@ -1,7 +1,7 @@
 from inspect import classify_class_attrs
 import unittest
 from unittest import result
-import calc
+import tests.calc as calc
 
 class testCalc(unittest.TestCase):
     def test_add_1(self):

@@ -7,6 +7,13 @@
             "primary_key"  : "id",
             "Index_keys" : ["name"],
             "Consistently" : "Strong"
+        },
+        {
+            "name" : "reservation",
+            "columns" : ["fname","lname", "age", "id"],
+            "primary_key"  : "id",
+            "Index_keys" : ["fname"],
+            "Consistently" : "Strong"
         }
      ] 
 }
