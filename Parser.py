@@ -1,10 +1,17 @@
 import argparse
+import os
 
+parser = argparse.ArgumentParser()
+parent_path=os.getcwd()
 def parseInput():
-    global parser
     parser=argparse.ArgumentParser()
     parser.add_argument("-cmd","--command",type=str)
-    parser.add_argument("-sch","--schema",type=str)
+    parser.add_argument("-sch","--schema",type=str)  
+    if(parser.parse_known_args()[0].command=="create"and 
+    (parser.parse_known_args()[0].schema==None or #if the user forgot to parse the schema file
+    not os.path.isdir(os.path.join(parent_path,parser.parse_known_args()[0].schema)))): #if the user parse a not existent file
+        print("please enter a valid query")
+        parser.add_argument("sch",type=str)    
     parser.add_argument("-pk","--primaryKey",type=str)
     parser.add_argument("-val","--value",type=str)  
     parser.add_argument("-dp","--data_base",type=str)
@@ -12,17 +19,3 @@ def parseInput():
     
 
     return parser.parse_args() 
-
-#not completed function
-# def get_argument():
-#     parser2=argparse.ArgumentParser(parents=[parser])
-#     parser2.add_argument("-cmd","--command",type=str)
-#     parser2.add_argument("-sch","--schema",type=str)
-#     parser2.add_argument("-pk","--primaryKey",type=str)
-#     parser2.add_argument("-val","--value",type=str)  
-#     parser2.add_argument("-dp","--data_base",type=str)
-#     parser2.add_argument("-tb","--table",type=str) 
-#     parser=parser2
-#     return parser2.parse_args()
-
-#parent_parser = argparse.ArgumentParser
