@@ -13,17 +13,20 @@ class commandfactory:
     def build_command(args):
         command_type=args.command
         if command_type == "create":
-            return create()
+            return create(args.schema)
         elif command_type == "delete":
             return delete()
         elif command_type == "get":
             return get()
         elif command_type == "set":
             return set()
-
+        
 class create(Icommand):
-    def excute(self,args):
-        f=open(args.schema,"r")
+    def __init__(self,schema):
+        self.schema=schema
+    def excute(self):
+        schema=self.schema
+        f=open(schema,"r")
         schima=json.load(f)
         parent_dir=os.getcwd() #get the current dir of the project
         data_base_name=schima[keys.DB_name]
@@ -41,11 +44,16 @@ class create(Icommand):
 
     
 #this will be implemented later
-def delete(primary_key):
-    print("dummy will be implemented later")
+class delete(Icommand):#add here the init function and initialize your paramater
+     
+    def excute(self):
+        print("dummy delete will be implemented later")
 
-def get(primary_key):
-    print("dummy will be implemented later")
+class get(Icommand):
+     
+    def excute(self):
+        print("dummy get will be implemented later")
 
-def set(primary_key,value):
-    print("dummy will be implemented later")
+class set(Icommand):
+    def excute(self):
+        print("dummy set will be implemented later")
