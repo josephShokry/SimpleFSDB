@@ -1,5 +1,5 @@
 {
-    "database_name" : "csed2025", 
+    "database_name" : "CSE2025", 
     "Tables" : [
         {
             "name" : "Students", 

@@ -10,12 +10,12 @@ class Create(Icommand):
             schema = open(schema_file, "r")
         except:
             print('wrong schema path')
-            return
+            exit()
         try:
             self.schema_data = json.load(schema)
         except:
             print('schema is written in a wrong json format')
-            return
+            exit()
         schema.close()
     def execute(self):
         schema_data = self.schema_data
