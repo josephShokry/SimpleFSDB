@@ -2,8 +2,7 @@ from imp import PKG_DIRECTORY
 from msilib import schema
 from tkinter.tix import COLUMN
 
-
-class keys:
+class Keys:
     SCHEMA = "schema"
     DB_NAME = "database_name"
     TABLES  = "Tables"
