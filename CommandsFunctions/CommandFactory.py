@@ -1,14 +1,14 @@
 from Create import Create
 from Delete import Delete
 from Get import Get
-from CommandsFunctions.Set import Set
+from Set import Set
 
-class Command_Factory:
+class CommandFactory:
     @staticmethod
     def build_command(args):
         command_type=args.command
         if command_type == "create":
-            return Create(args.schema)
+            return Create(args.schema_file)
         elif command_type == "delete":
             return Delete()
         elif command_type == "get":

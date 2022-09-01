@@ -1,6 +1,6 @@
-from abc import ABCMeta,  abstractstaticmethod
+from abc import abstractmethod
 
-class Icommand(metaclass=ABCMeta):
-    @abstractstaticmethod
-    def execute():
+class Icommand:
+    @abstractmethod
+    def excute():
         """the interface Icommand"""

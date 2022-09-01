@@ -1,9 +1,8 @@
-from Icommand import Icommand
 import os
 import json
 from SchemaKeys import Keys
+from Icommand import Icommand
 
-class Delete(Icommand):#add here the init function and initialize your paramater
-     
+class Delete(Icommand):
     def execute(self):
         print("dummy delete will be implemented later")
