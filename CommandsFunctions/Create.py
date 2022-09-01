@@ -2,7 +2,7 @@ import os
 import json
 from SchemaKeys import Keys
 from Icommand import Icommand
-        
+
 class Create(Icommand):
     def __init__(self, schema_file):
         self.schema_file = schema_file
