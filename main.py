@@ -1,9 +1,8 @@
 import Parser
-import command_function
+from command_function import commandfactory
 
 
 if __name__=='__main__':
-    args=Parser.parseInput()
-    command =command_function.commandfactory.build_command(args)
+    args = Parser.parseInput()
+    command = commandfactory.build_command(args)
     command.excute()
-    

@@ -3,6 +3,7 @@ from abc import ABCMeta,  abstractstaticmethod
 import json
 from schema_keys import keys
 
+
 class Icommand(metaclass=ABCMeta):
     @abstractstaticmethod
     def excute():
@@ -23,11 +24,19 @@ class commandfactory:
         
 class create(Icommand):
     def __init__(self, schema):
-        self.schema=schema
+        self.schema = schema
     def excute(self):
         schema = self.schema
-        schema_file = open(schema, "r")
-        schema = json.load(schema_file)
+        try:
+            schema_file = open(schema, "r")
+        except:
+            print('wrong schema path')
+            return
+        try:
+            schema = json.load(schema_file)
+        except:
+            print('schema is written in a wrong json format')
+            return
         parent_dir = os.getcwd() #get the current dir of the project
         data_base_name = schema[keys.DB_NAME]
         path = os.path.join(parent_dir, data_base_name)
@@ -38,8 +47,8 @@ class create(Icommand):
                 table_path = os.path.join(path, table[keys.NAME])
                 if not os.path.isdir(table_path):
                     os.mkdir(table_path)
-                    # file_name=os.path.join(table_path, "info.txt")
-                    # f=open(file_name, 'w')
+                    # file_name = os.path.join(table_path, "info.txt")
+                    # f = open(file_name, 'w')
                     # f.write(json.dumps(i,  indent = 4))
         except:
             print('No Tables Found')

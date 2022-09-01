@@ -12,13 +12,3 @@ class keys:
     PK = "primary_key"
     INDEX_KEY = "Index_keys"
     CONSISTENTLY = "Consistently"
-
-
-
- 
- 
-
-
-
-
-
