@@ -1,4 +1,8 @@
-class Schema_keys:
+from imp import PKG_DIRECTORY
+from msilib import schema
+from tkinter.tix import COLUMN
+
+class Keys:
     SCHEMA = "schema"
     DB_NAME = "database_name"
     TABLES  = "Tables"
@@ -7,13 +11,3 @@ class Schema_keys:
     PK = "primary_key"
     INDEX_KEY = "Index_keys"
     CONSISTENTLY = "Consistently"
-
-
-
- 
- 
-
-
-
-
-
