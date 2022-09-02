@@ -1,6 +1,6 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-class Icommand:
+class Icommand(ABC):
     @abstractmethod
     def execute():
         """the interface Icommand"""
