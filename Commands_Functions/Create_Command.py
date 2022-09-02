@@ -1,16 +1,11 @@
-import os
-import json
+import os, json
 from Schema_Keys import Keys
 from Icommand import Icommand
 
 class CreateCommand(Icommand):
     def __init__(self, schema_file):
         self.schema_file = schema_file
-        #try:
         schema = open(schema_file, "r")
-        #except:
-        #    print('wrong schema path')
-        #    exit()
         try:
             self.schema_data = json.load(schema)
         except:
@@ -28,3 +23,5 @@ class CreateCommand(Icommand):
         for table in schema_data[Keys.TABLES]:
             table_path = os.path.join(path, table[Keys.NAME])
             os.makedirs(table_path, exist_ok = True)
+            
+#ToDo: Handle input wrong schema path (line 8)
