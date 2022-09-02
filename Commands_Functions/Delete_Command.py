@@ -1,8 +1,8 @@
 import os
 import json
-from SchemaKeys import Keys
+from Schema_Keys import Keys
 from Icommand import Icommand
 
-class Delete(Icommand):
+class DeleteCommand(Icommand):
     def execute(self):
         print("dummy delete will be implemented later")

@@ -1,8 +1,8 @@
 import os
 import json
-from SchemaKeys import Keys
+from Schema_Keys import Keys
 from Icommand import Icommand
 
-class Get(Icommand):
+class GetCommand(Icommand):
     def execute(self):
         print("dummy get will be implemented later")

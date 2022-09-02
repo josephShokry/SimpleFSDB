@@ -1,11 +1,11 @@
 import unittest
 import os
-from SchemaKeys import Keys
+from Schema_Keys import Keys
 import json
 
 parent_path = os.getcwd()
 
-class test_functions(unittest.TestCase):
+class TestFunctions(unittest.TestCase):
     schema_file = open("schema.txt", "r")
     global schima
     schima = json.load(schema_file)
