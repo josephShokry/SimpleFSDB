@@ -1,11 +1,16 @@
 import os, json
 from Schema_Keys import Keys
-from Icommand import Icommand
+from I_Command import ICommand
 
-class CreateCommand(Icommand):
-    def __init__(self, schema_file):
-        self.schema_file = schema_file
-        schema = open(schema_file, "r")
+class CreateCommand(ICommand):
+    def __init__(self, schema_path):
+        self.validate(schema_path)
+    def validate(self, schema_path):
+        if not os.path.exists(schema_path):
+            print('schema path is incorrect')
+            exit()
+        self.schema_file = schema_path
+        schema = open(schema_path, "r")
         try:
             self.schema_data = json.load(schema)
         except:
