@@ -12,7 +12,15 @@ class CreateCommand(Icommand):
             print('schema is written in a wrong json format')
             exit()
         schema.close()
-    def execute(self):
+
+
+
+    #required to implement
+    def isvalid(self):
+        return "success"
+
+
+    def ExcuteInternal(self):
         schema_data = self.schema_data
         parent_dir = os.getcwd() #get the current dir of the project
         data_base_name = schema_data[Keys.DB_NAME]

@@ -5,4 +5,5 @@ from Commands_Functions.Command_Factory import CommandFactory
 if __name__=='__main__':
     args = Parser.parseInput()
     command = CommandFactory.create(args)
-    command.execute()
+    status = command.isvalid()
+    command.execute(status)

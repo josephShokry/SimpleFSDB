@@ -4,5 +4,9 @@ from Schema_Keys import Keys
 from Icommand import Icommand
 
 class DeleteCommand(Icommand):
-    def execute(self):
+
+
+    def isvalid(self):
+        pass
+    def ExcuteInternal(self):
         print("dummy delete will be implemented later")
