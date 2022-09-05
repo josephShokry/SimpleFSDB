@@ -1,6 +1,6 @@
 import os
 import json
-from SchemaKeys import Keys
+from SchemaKeys import SchemaKeys
 from Icommand import Icommand
 
 class Create(Icommand):
@@ -20,13 +20,13 @@ class Create(Icommand):
     def execute(self):
         schema_data = self.schema_data
         parent_dir = os.getcwd() #get the current dir of the project
-        data_base_name = schema_data[Keys.DB_NAME]
+        data_base_name = schema_data[SchemaKeys.DB_NAME]
         path = os.path.join(parent_dir, data_base_name)
         if not os.path.isdir(path): #to check if the DB directory is created before or not
             os.mkdir(path, True)
         try:
-            for table in schema_data[Keys.TABLES]:
-                table_path = os.path.join(path, table[Keys.NAME])
+            for table in schema_data[SchemaKeys.TABLES]:
+                table_path = os.path.join(path, table[SchemaKeys.NAME])
                 if not os.path.isdir(table_path):
                     os.mkdir(table_path, True)
                     # file_name = os.path.join(table_path, "info.txt")

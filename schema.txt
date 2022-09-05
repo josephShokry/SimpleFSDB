@@ -5,14 +5,14 @@
             "name" : "Students", 
             "columns" : ["name",  "age",  "id"], 
             "primary_key"  : "id", 
-            "Index_keys" : ["name"], 
+            "Index_SchemaKeys" : ["name"], 
             "Consistently" : "Strong"
         }, 
         {
             "name" : "reservation", 
             "columns" : ["fname", "lname",  "age",  "id"], 
             "primary_key"  : "id", 
-            "Index_keys" : ["fname"], 
+            "Index_SchemaKeys" : ["fname"], 
             "Consistently" : "Strong"
         }
      ] 
