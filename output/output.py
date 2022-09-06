@@ -1,5 +1,6 @@
-from sre_constants import SUCCESS
-from status import Status
+from output.status import Status
+
+
 class OutPut:
     def __init__(self, result = None, message = None, status = None):
         if status == Status.SUCCESS:
