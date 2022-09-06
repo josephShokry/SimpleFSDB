@@ -8,7 +8,7 @@ class CommandFactory:
     def create(args):
         command_type=args.command
         if command_type == "create":
-            return CreateCommand(args.schema_file)
+            return CreateCommand(args.schema_path)
         elif command_type == "delete":
             return DeleteCommand()
         elif command_type == "get":

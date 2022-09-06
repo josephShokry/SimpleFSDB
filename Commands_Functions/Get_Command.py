@@ -1,12 +1,14 @@
-import os
-import json
+import os, json
+from Commands_Functions.Icommand import Icommand
 from Schema_Keys import Keys
-from Icommand import Icommand
 
+ 
 class GetCommand(Icommand):
 
 
     def isvalid(self):
         pass
     def ExcuteInternal(self):
-        print("dummy get will be implemented later")
+        pass
+ 
+ 

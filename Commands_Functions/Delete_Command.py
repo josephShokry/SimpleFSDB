@@ -1,12 +1,13 @@
-import os
-import json
+import os, json
+from Commands_Functions.EnumStatus import Status
+from Commands_Functions.Icommand import Icommand
 from Schema_Keys import Keys
-from Icommand import Icommand
 
 class DeleteCommand(Icommand):
 
 
     def isvalid(self):
-        pass
+        return Status.success
     def ExcuteInternal(self):
-        print("dummy delete will be implemented later")
+         print("dummy delete will be implemented later")
+ 
