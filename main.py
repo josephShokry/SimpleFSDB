@@ -9,10 +9,12 @@ from Commands_Functions.Command_Factory import CommandFactory
 if __name__=='__main__':
     try:
         args = Parser.parseInput()
-        command = CommandFactory.create(args)
+        command = CommandFactory.create_commands(args)
         command.execute()
     except Exception as e:
-        excetpion_object = ExceptionFactory(type(e).__name__)
+        excetpion_object = ExceptionFactory.create_exception(type(e).__name__)
+        #print(repr(excetpion_object))
         OutPut(status = excetpion_object.status, message = excetpion_object.message)
+        
     else:
         OutPut(status = Status.SUCCESS)

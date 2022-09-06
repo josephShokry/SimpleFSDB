@@ -6,6 +6,7 @@ sch2 -> create the DB beside there is a created one but there is a shortage int 
 sch3 -> create beside a created DB
 sch4 -> just the dir of the DB with no tables
 //
+test 5 -> missing schema path
 sch5 -> wrong schema path
 sch6 -> invalid schema json
 sch7 -> 
@@ -16,6 +17,8 @@ import unittest
 import os
 from Schema_Keys import Keys
 import json
+
+from output.exceptions import MissingInput
 
 parent_path = os.getcwd()
 
@@ -79,6 +82,16 @@ class test_functions(unittest.TestCase):
             check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
         shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
         self.assertTrue(check)
+
+    def test_create_5(self):
+        changedir = parent_path
+        os.system(changedir)
+        cmd = "python main.py -cmd create"
+        try:
+            os.system(cmd)
+        except MissingInput:
+            pass
+        
 
 if __name__ == '__main__':
     #make sure to run the next command in cmd before running the test cases file

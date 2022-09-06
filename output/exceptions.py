@@ -1,8 +1,9 @@
 from output.status import Status
 
-
 class MissingInput(Exception):
-    def __init__(self, status = Status.MissingInput, message = "there is a missed required input"):
+    status = Status.MissingInput
+    message = "there is a missed required input"
+    def __init__(self, status, message):
         self.status = status
         self.message = message
         super().__init__(self.message)

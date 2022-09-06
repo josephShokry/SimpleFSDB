@@ -2,7 +2,7 @@ from output.exceptions import *
 
 
 class ExceptionFactory:
-    def __init__(self, exception_name):
+    def create_exception(exception_name):
         if (exception_name == "DBNotFound"):
             return DBNotFound
         elif (exception_name == "TableNotFound"):
