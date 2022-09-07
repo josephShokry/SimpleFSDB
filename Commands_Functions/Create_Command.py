@@ -1,29 +1,26 @@
 import os, json
 from Schema_Keys import Keys
-from I_Command import ICommand
+from Icommand import Icommand
+from output.status import Status
 
-class CreateCommand(ICommand):
+class CreateCommand(Icommand):
     def __init__(self, schema_path):
-        self.validate(schema_path)
-    def validate(self, schema_path):
-        if not os.path.exists(schema_path):
+        self.schema_path = schema_path
+    
+    #required to implement
+    def isvalid(self):
+        if not os.path.exists(self.schema_path):
             print('schema path is incorrect')
             exit()
-        self.schema_file = schema_path
-        schema = open(schema_path, "r")
+        self.schema_file = self.schema_path
+        schema = open(self.schema_path, "r")
         try:
             self.schema_data = json.load(schema)
         except:
             print('schema is written in a wrong json format')
             exit()
         schema.close()
-
-
-
-    #required to implement
-    def isvalid(self):
-        return "success"
-
+        return Status.SUCCESS
 
     def ExcuteInternal(self):
         schema_data = self.schema_data

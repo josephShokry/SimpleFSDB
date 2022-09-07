@@ -1,7 +1,7 @@
-import enum
+from enum import Enum
 
 
-class Status(enum.Enum):
+class Status(Enum):
     SUCCESS = 0
     DBNotFound = 1
     TableNotFound = 2
