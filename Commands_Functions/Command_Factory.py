@@ -1,7 +1,7 @@
-from Create_Command import CreateCommand
-from Delete_Command import DeleteCommand
-from Get_Command import GetCommand
-from Set_Command import SetCommand
+from create_command import CreateCommand
+from delete_command import DeleteCommand
+from get_command import GetCommand
+from set_command import SetCommand
 from output.exceptions import *
 from output.status import Status
 

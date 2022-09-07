@@ -16,7 +16,7 @@ import shutil
 import unittest
 import os
 from unittest.result import failfast
-from Schema_Keys import Keys
+from schema_keys import Keys
 import json
 
 from output.exceptions import MissingInput, WrongInput
@@ -25,64 +25,64 @@ parent_path = os.getcwd()
 
 class test_functions(unittest.TestCase):
     def test_create_sch1(self):
-        schema_file = open("testcases_schemas\sch1.txt","r")
-        schema = json.load(schema_file)
-        #exceute the create command and make the DB
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch testcases_schemas\sch1.txt"
-        os.system(cmd)
-        #check if there is any problem
-        check = TRUE
-        check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
-        parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
-        for table in schema[Keys.TABLES]:
-            check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-        self.assertTrue(check)
+        with open("testcases_schemas\sch1.txt", 'r')as schema_file:
+            schema = json.load(schema_file)
+            #exceute the create command and make the DB
+            changedir = parent_path
+            os.system(changedir)
+            cmd = "python main.py -cmd create -sch testcases_schemas\sch1.txt"
+            os.system(cmd)
+            #check if there is any problem
+            check = TRUE
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
+            for table in schema[Keys.TABLES]:
+                check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
+            self.assertTrue(check)
 
     def test_create_sch2(self):
-        schema_file = open("testcases_schemas\sch2.txt","r")
-        schema = json.load(schema_file)
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch testcases_schemas\sch2.txt"
-        os.system(cmd)
-        check = TRUE
-        check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
-        parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
-        for table in schema[Keys.TABLES]:
-            check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-        self.assertTrue(check)
+        with open("testcases_schemas\sch2.txt", 'r') as schema_file:
+            schema = json.load(schema_file)
+            changedir = parent_path
+            os.system(changedir)
+            cmd = "python main.py -cmd create -sch testcases_schemas\sch2.txt"
+            os.system(cmd)
+            check = TRUE
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
+            for table in schema[Keys.TABLES]:
+                check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
+            self.assertTrue(check)
 
     def test_create_sch3(self):
-        schema_file = open("testcases_schemas\sch3.txt","r")
-        schema = json.load(schema_file)
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch testcases_schemas\sch3.txt"
-        os.system(cmd)
-        check = TRUE
-        check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
-        parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
-        for table in schema[Keys.TABLES]:
-            check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-        shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
-        self.assertTrue(check)
+        with open("testcases_schemas\sch3.txt", 'r') as schema_file:
+            schema = json.load(schema_file)
+            changedir = parent_path
+            os.system(changedir)
+            cmd = "python main.py -cmd create -sch testcases_schemas\sch3.txt"
+            os.system(cmd)
+            check = TRUE
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
+            for table in schema[Keys.TABLES]:
+                check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
+            shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
+            self.assertTrue(check)
 
     def test_create_sch4(self):
-        schema_file = open("testcases_schemas\sch4.txt","r")
-        schema = json.load(schema_file)
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch testcases_schemas\sch4.txt"
-        os.system(cmd)
-        check = TRUE
-        check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
-        parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
-        for table in schema[Keys.TABLES]:
-            check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-        shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
-        self.assertTrue(check)
+        with open("testcases_schemas\sch4.txt","r") as schema_file:
+            schema = json.load(schema_file)
+            changedir = parent_path
+            os.system(changedir)
+            cmd = "python main.py -cmd create -sch testcases_schemas\sch4.txt"
+            os.system(cmd)
+            check = TRUE
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DB_NAME])
+            for table in schema[Keys.TABLES]:
+                check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
+            shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
+            self.assertTrue(check)
 
     def test_create_5(self):#missing the schema
         changedir = parent_path
@@ -100,7 +100,7 @@ class test_functions(unittest.TestCase):
         try:
             os.system(cmd)
         except WrongInput:
-            return 
+            return
         return failfast
 
     def test_create_7(self):#not valid schema file

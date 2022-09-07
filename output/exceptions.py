@@ -29,9 +29,3 @@ class WrongInput(Exception):
         self.status = status
         self.message = message
         super().__init__(self.message)
-
-    # def status(self):
-    #     return self.status
-
-    # def message(self):
-    #     return self.message

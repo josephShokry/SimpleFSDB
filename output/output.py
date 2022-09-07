@@ -1,11 +1,8 @@
 from output.status import Status
 
-
 class OutPut:
     def __init__(self, result = None, message = None, status = None):
         if status == Status.SUCCESS:
-            print("the command has been executed successfully!")
+            self.message = "the command has been executed successfully!"
         else:
-            print("the command has not been executed")
-            print(message)
-    
+            self.message = "the command has not been executed!\n" + message
