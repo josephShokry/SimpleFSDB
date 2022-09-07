@@ -1,24 +1,21 @@
 import os, json
 from Schema_Keys import Keys
 from Icommand import Icommand
+from output.exceptions import MissingInput, WrongInput
 from output.status import Status
 
 class CreateCommand(Icommand):
     def __init__(self, schema_path):
         self.schema_path = schema_path
-    
-    #required to implement
     def isvalid(self):
-        if not os.path.exists(self.schema_path):
-            print('schema path is incorrect')
-            exit()
+        if self.schema_path == None or not os.path.exists(self.schema_path) :
+            raise MissingInput(status = Status.MissingInput, message = "the schema is missing")
         self.schema_file = self.schema_path
         schema = open(self.schema_path, "r")
         try:
             self.schema_data = json.load(schema)
         except:
-            print('schema is written in a wrong json format')
-            exit()
+            raise WrongInput(status = Status.WrongInput, message = "schema is written in a wrong json format") 
         schema.close()
         return Status.SUCCESS
 
@@ -34,4 +31,3 @@ class CreateCommand(Icommand):
             table_path = os.path.join(path, table[Keys.NAME])
             os.makedirs(table_path, exist_ok = True)
             
-#ToDo: Handle input wrong schema path (line 8)

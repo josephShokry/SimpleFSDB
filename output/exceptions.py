@@ -1,9 +1,7 @@
 from output.status import Status
 
 class MissingInput(Exception):
-    status = Status.MissingInput
-    message = "there is a missed required input"
-    def __init__(self, status, message):
+    def __init__(self, status = Status.MissingInput, message = "there is a missed required input"):
         self.status = status
         self.message = message
         super().__init__(self.message)
@@ -27,7 +25,13 @@ class FileNotFound(Exception):
         super().__init__(self.message)
 
 class WrongInput(Exception):
-    def __init__(self, status = Status.WrongInput, message = "wrong input"):
+    def __init__(self, status = Status.WrongInput , message = "wrong input"):
         self.status = status
         self.message = message
         super().__init__(self.message)
+
+    # def status(self):
+    #     return self.status
+
+    # def message(self):
+    #     return self.message

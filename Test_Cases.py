@@ -15,10 +15,11 @@ from pickle import TRUE
 import shutil
 import unittest
 import os
+from unittest.result import failfast
 from Schema_Keys import Keys
 import json
 
-from output.exceptions import MissingInput
+from output.exceptions import MissingInput, WrongInput
 
 parent_path = os.getcwd()
 
@@ -83,7 +84,7 @@ class test_functions(unittest.TestCase):
         shutil.rmtree(os.path.join(parent_path,schema[Keys.DB_NAME]))
         self.assertTrue(check)
 
-    def test_create_5(self):
+    def test_create_5(self):#missing the schema
         changedir = parent_path
         os.system(changedir)
         cmd = "python main.py -cmd create"
@@ -91,10 +92,28 @@ class test_functions(unittest.TestCase):
             os.system(cmd)
         except MissingInput:
             pass
+    
+    def test_create_6(self): #worng schema path
+        changedir = parent_path
+        os.system(changedir)
+        cmd = "python main.py -cmd create -sch schemaa.txt"
+        try:
+            os.system(cmd)
+        except WrongInput:
+            return 
+        return failfast
+
+    def test_create_7(self):#not valid schema file
+        changedir = parent_path
+        os.system(changedir)
+        cmd = "python main.py -cmd create -sch testcases_schemas\sch5.txt"
+        try:
+            os.system(cmd)
+        except WrongInput:
+            pass
+        return failfast
+        
         
 
 if __name__ == '__main__':
-    #make sure to run the next command in cmd before running the test cases file
-    #dir = "cd Desktop\check in system\DB\SimpleFSDB"
-    #cmd = "python main.py -cmd create -sch schema.txt"
     unittest.main()

@@ -3,7 +3,7 @@
     "Tables" : [
         {
             "name" : "Students", 
-            "columns" : ["name",  "age",  "id"], 
+            "columns" : ["name",  "age",  "id"],
             "primary_key"  : "id", 
             "Index_keys" : ["name"], 
             "Consistently" : "Strong"

@@ -8,3 +8,4 @@ class Status(Enum):
     MissingInput = 3
     FileNotFound = 4
     WrongInput = 5
+    

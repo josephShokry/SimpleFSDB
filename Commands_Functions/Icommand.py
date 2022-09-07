@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from distutils.cmd import Command
 
 from output.status import Status
 
