@@ -12,13 +12,10 @@ if __name__=='__main__':
         args = parsing.parseInput()
         command = CommandFactory.create_commands(args)
         result = command.execute()
+        output_object = Output(result)
     except Exception as e:
        output_object = Output(e,result)
-    else:
-        output_object = Output(result)
-
-    output_josn = output_object.output_json()
-    print(json.dumps(output_josn, indent = 2)) 
+    print(json.dumps(output_object.__dict__, indent = 2)) 
 
 
 
