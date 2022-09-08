@@ -1,10 +1,9 @@
 import os, json
 from schema_keys import Keys
-from icommand import Icommand
 from output.exceptions import MissingInput, WrongInput
 from output.status import Status
 
-class CreateCommand(Icommand):
+class CreateCommand():
     def __init__(self, schema_path):
         self.schema_data = self.isvalid(schema_path = schema_path)
         
