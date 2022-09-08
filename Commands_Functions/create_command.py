@@ -6,18 +6,17 @@ from output.status import Status
 
 class CreateCommand(Icommand):
     def __init__(self, schema_path):
-        self.schema_path = schema_path
-        self.isvalid()
+        self.schema_data = self.isvalid(schema_path = schema_path)
         
-    def isvalid(self):
-        if self.schema_path == None or not os.path.exists(self.schema_path) :
+    def isvalid(self, schema_path):
+        if schema_path == None or not os.path.exists(schema_path) :
             raise MissingInput(status = Status.MissingInput, message = "the schema is missing")
-        self.schema_file = self.schema_path
-        with open(self.schema_path, 'r') as schema: 
+        with open(schema_path, 'r') as schema: 
             try:
-                self.schema_data = json.load(schema)
+                schema_data = json.load(schema)
             except:
                 raise WrongInput(status = Status.WrongInput, message = "schema is written in a wrong json format")
+        return schema_data
 
 
     def execute(self):
