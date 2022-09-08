@@ -14,7 +14,7 @@ if __name__=='__main__':
         result = command.execute()
         output_object = Output(result)
     except Exception as e:
-       output_object = Output(e,result)
+       output_object = Output(exception = e,result = result)
     print(json.dumps(output_object.__dict__, indent = 2)) 
 
 
