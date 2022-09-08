@@ -1,6 +1,6 @@
 import argparse
 
-def parseInput():
+def  parseInput():
     parser = argparse.ArgumentParser()
     parser.add_argument("-cmd", "--command", type = str.lower, help = "the quiry command", required = True)
     parser.add_argument("-sch", "--schema_path", type = str,help = "path to your schema file")

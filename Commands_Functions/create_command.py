@@ -19,15 +19,14 @@ class CreateCommand(Icommand):
             except:
                 raise WrongInput(status = Status.WrongInput, message = "schema is written in a wrong json format")
 
+
     def execute(self):
-        schema_data = self.schema_data
         parent_dir = os.getcwd() #get the current dir of the project
-        data_base_name = schema_data[Keys.DB_NAME]
+        data_base_name = self.schema_data[Keys.DB_NAME]
         path = os.path.join(parent_dir, data_base_name)
         os.makedirs(path, exist_ok = True)
-        if not Keys.TABLES in schema_data:
+        if not Keys.TABLES in self.schema_data:
             return
-        for table in schema_data[Keys.TABLES]:
+        for table in self.schema_data[Keys.TABLES]:
             table_path = os.path.join(path, table[Keys.NAME])
-            os.makedirs(table_path, exist_ok = True)
-            
+            os.makedirs(table_path, exist_ok = True)      

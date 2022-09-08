@@ -7,3 +7,6 @@ class Status(Enum):
     MissingInput = 3
     FileNotFound = 4
     WrongInput = 5
+
+    def printName(self):
+        return self.name

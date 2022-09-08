@@ -112,8 +112,7 @@ class test_functions(unittest.TestCase):
         except WrongInput:
             pass
         return failfast
-        
-        
+          
 
 if __name__ == '__main__':
     unittest.main()

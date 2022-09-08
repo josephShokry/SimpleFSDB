@@ -1,18 +1,25 @@
-import parser, sys, os, json
-from output.output import OutPut
+import argparse
+import parsing, sys, os, json
+from output.output import Output
 from output.status import Status
 
 sys.path.append(os.path.join(os.getcwd(), "Commands_Functions"))
 from Commands_Functions.command_factory import CommandFactory
 
 if __name__=='__main__':
+    result = None
     try:
-        args = parser.parseInput()
+        args = parsing.parseInput()
         command = CommandFactory.create_commands(args)
-        command.execute()
+        result = command.execute()
     except Exception as e:
-        output_object = OutPut(status = e.status, message = e.message)
+       output_object = Output(e,result)
     else:
-        output_object = OutPut(status = Status.SUCCESS)
+        output_object = Output(result)
 
-print(output_object.message)
+    output_josn = output_object.output_json()
+    print(json.dumps(output_josn, indent = 2)) 
+
+
+
+ 
