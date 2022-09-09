@@ -5,7 +5,7 @@ class Output:
         self.result = result
         if exception != None:
             self.message = str(exception)
-            self.status =  Status.printName(exception.status)
+            self.status =  exception.status
         else :
             self.message = "the command has been executed successfully!"
-            self.status = Status.printName(Status.SUCCESS)
+            self.status = Status.Success.name

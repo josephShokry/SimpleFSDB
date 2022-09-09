@@ -1,10 +1,10 @@
 import os, json
+from Commands_Functions.abstract_command import AbtractCommand
 from schema_keys import Keys
 from output.status import Status
 
-class GetCommand():
+class GetCommand(AbtractCommand):
 
-    def isvalid(self):
-        pass
+     
     def execute(self):
         print("dummy get will be implemented later")

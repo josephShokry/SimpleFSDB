@@ -1,13 +1,15 @@
 import os, json
+from Commands_Functions.abstract_command import AbtractCommand
 from schema_keys import Keys
 from output.exceptions import MissingInput, WrongInput
 from output.status import Status
 
-class CreateCommand():
+class CreateCommand(AbtractCommand):
     def __init__(self, schema_path):
-        self.schema_data = self.isvalid(schema_path = schema_path)
-        
-    def isvalid(self, schema_path):
+        self.schema_data = CreateCommand.__validate(schema_path)
+
+    @staticmethod  
+    def __validate(schema_path):
         if schema_path == None or not os.path.exists(schema_path) :
             raise MissingInput(status = Status.MissingInput, message = "the schema is missing")
         with open(schema_path, 'r') as schema: 
