@@ -19,22 +19,22 @@ from unittest.result import failfast
 import json
 
 
-sys.path.append(os.path.join(str(os.getcwd()).replace("tests", ''),"Source"))
+sys.path.append(os.path.join(str(os.getcwd()).replace("tests", ''),"source"))
 from main import *
 from Commands_Functions.schema_keys import Keys
 from outputs.exceptions import MissingInput
 
 
-main_path = os.path.join(os.getcwd(),"Source")
+main_path = os.path.join(os.getcwd(),"source")
 
 class test_functions(unittest.TestCase):
     def test_create_sch1(self):
         with open("tests\\testcases_schemas\sch1.txt", 'r')as schema_file:
             schema = json.load(schema_file)
             #exceute the create command and make the DB
-            parent_path = main_path.replace("\Source","")
+            parent_path = main_path.replace("\source","")
             os.system(main_path)
-            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch1.txt"
+            cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch1.txt"
             os.system(cmd)
 
             #check if there is any problem
@@ -48,9 +48,9 @@ class test_functions(unittest.TestCase):
     def test_create_sch2(self):
         with open("tests\\testcases_schemas\sch2.txt", 'r') as schema_file:
             schema = json.load(schema_file)
-            parent_path = main_path.replace("\Source","")
+            parent_path = main_path.replace("\source","")
             os.system(main_path)
-            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch2.txt"
+            cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch2.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -62,9 +62,9 @@ class test_functions(unittest.TestCase):
     def test_create_sch3(self):
         with open("tests\\testcases_schemas\sch3.txt", 'r') as schema_file:
             schema = json.load(schema_file)
-            parent_path = main_path.replace("\Source","")
+            parent_path = main_path.replace("\source","")
             os.system(main_path)
-            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch3.txt"
+            cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch3.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -77,9 +77,9 @@ class test_functions(unittest.TestCase):
     def test_create_sch4(self):
         with open("tests\\testcases_schemas\sch4.txt","r") as schema_file:
             schema = json.load(schema_file)
-            parent_path = main_path.replace("\Source","")
+            parent_path = main_path.replace("\source","")
             os.system(main_path)
-            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch4.txt"
+            cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch4.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -91,7 +91,7 @@ class test_functions(unittest.TestCase):
 
     def test_create_5(self):#missing the schema
         os.system(main_path)
-        cmd = "python Source\main.py -cmd create"
+        cmd = "python source\main.py -cmd create"
         try:
             os.system(cmd)
         except MissingInput:
@@ -99,7 +99,7 @@ class test_functions(unittest.TestCase):
     
     def test_create_6(self): #worng schema path
         os.system(main_path)
-        cmd = "python Source\main.py -cmd create -sch schemaa.txt"
+        cmd = "python source\main.py -cmd create -sch schemaa.txt"
         try:
             os.system(cmd)
         except WrongInput:
@@ -108,7 +108,7 @@ class test_functions(unittest.TestCase):
 
     def test_create_7(self):#not valid schema file
         os.system(main_path)
-        cmd = "python Source\main.py -cmd create -sch testcases_schemas\sch5.txt"
+        cmd = "python source\main.py -cmd create -sch testcases_schemas\sch5.txt"
         try:
             os.system(cmd)
         except WrongInput:
