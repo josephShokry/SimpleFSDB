@@ -16,4 +16,4 @@ jobs:
           python -m pip install --upgrade pip
       
       - name : run test cases
-        run : python test_cases.py
+        run : python tests\test_cases.py
