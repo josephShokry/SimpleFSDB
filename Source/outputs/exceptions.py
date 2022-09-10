@@ -1,4 +1,4 @@
-from Output.status import Status
+from outputs.status import Status
 
 class MissingInput(Exception):
     def __init__(self, status = Status.MissingInput, message = "there is a missed required input"):

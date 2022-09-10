@@ -1,6 +1,6 @@
-from Output.status import Status
+from outputs.status import Status
 
-class Output:
+class outputs:
     def __init__(self,exception = None, result = None):
         self.result = result
         if exception != None:

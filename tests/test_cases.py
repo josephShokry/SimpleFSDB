@@ -11,26 +11,32 @@ sch5 -> wrong schema path
 sch6 -> invalid schema json
 sch7 -> 
 '''
-import shutil, unittest, os, sys, json
 from pickle import TRUE
+import shutil
+import unittest
+import os,sys
 from unittest.result import failfast
-print(os.getcwd())
-sys.path.append(os.path(str(os.getcwd()).replace("Test", '')))
-print(os.getcwd())
-from Source.Commands_Functions.schema_keys import Keys
-from Source.Output.exceptions import *
+import json
 
-parent_path = os.getcwd()
+
+sys.path.append(os.path.join(str(os.getcwd()).replace("tests", ''),"Source"))
+from main import *
+from Commands_Functions.schema_keys import Keys
+from outputs.exceptions import MissingInput
+
+
+main_path = os.path.join(os.getcwd(),"Source")
 
 class test_functions(unittest.TestCase):
     def test_create_sch1(self):
-        with open("testcases_schemas\sch1.txt", 'r') as schema_file:
+        with open("tests\\testcases_schemas\sch1.txt", 'r')as schema_file:
             schema = json.load(schema_file)
             #exceute the create command and make the DB
-            changedir = parent_path
-            os.system(changedir)
-            cmd = "python main.py -cmd create -sch testcases_schemas\sch1.txt"
+            parent_path = main_path.replace("\Source","")
+            os.system(main_path)
+            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch1.txt"
             os.system(cmd)
+
             #check if there is any problem
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -40,11 +46,11 @@ class test_functions(unittest.TestCase):
             self.assertTrue(check)
 
     def test_create_sch2(self):
-        with open("testcases_schemas\sch2.txt", 'r') as schema_file:
+        with open("tests\\testcases_schemas\sch2.txt", 'r') as schema_file:
             schema = json.load(schema_file)
-            changedir = parent_path
-            os.system(changedir)
-            cmd = "python main.py -cmd create -sch testcases_schemas\sch2.txt"
+            parent_path = main_path.replace("\Source","")
+            os.system(main_path)
+            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch2.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -54,11 +60,11 @@ class test_functions(unittest.TestCase):
             self.assertTrue(check)
 
     def test_create_sch3(self):
-        with open("testcases_schemas\sch3.txt", 'r') as schema_file:
+        with open("tests\\testcases_schemas\sch3.txt", 'r') as schema_file:
             schema = json.load(schema_file)
-            changedir = parent_path
-            os.system(changedir)
-            cmd = "python main.py -cmd create -sch testcases_schemas\sch3.txt"
+            parent_path = main_path.replace("\Source","")
+            os.system(main_path)
+            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch3.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -69,11 +75,11 @@ class test_functions(unittest.TestCase):
             self.assertTrue(check)
 
     def test_create_sch4(self):
-        with open("testcases_schemas\sch4.txt","r") as schema_file:
+        with open("tests\\testcases_schemas\sch4.txt","r") as schema_file:
             schema = json.load(schema_file)
-            changedir = parent_path
-            os.system(changedir)
-            cmd = "python main.py -cmd create -sch testcases_schemas\sch4.txt"
+            parent_path = main_path.replace("\Source","")
+            os.system(main_path)
+            cmd = "python Source\main.py -cmd create -sch tests\\testcases_schemas\sch4.txt"
             os.system(cmd)
             check = TRUE
             check = os.path.isdir(os.path.join(parent_path, schema[Keys.DB_NAME]))
@@ -84,18 +90,16 @@ class test_functions(unittest.TestCase):
             self.assertTrue(check)
 
     def test_create_5(self):#missing the schema
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create"
+        os.system(main_path)
+        cmd = "python Source\main.py -cmd create"
         try:
             os.system(cmd)
         except MissingInput:
             pass
     
     def test_create_6(self): #worng schema path
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch schemaa.txt"
+        os.system(main_path)
+        cmd = "python Source\main.py -cmd create -sch schemaa.txt"
         try:
             os.system(cmd)
         except WrongInput:
@@ -103,15 +107,14 @@ class test_functions(unittest.TestCase):
         return failfast
 
     def test_create_7(self):#not valid schema file
-        changedir = parent_path
-        os.system(changedir)
-        cmd = "python main.py -cmd create -sch testcases_schemas\sch5.txt"
+        os.system(main_path)
+        cmd = "python Source\main.py -cmd create -sch testcases_schemas\sch5.txt"
         try:
             os.system(cmd)
         except WrongInput:
             pass
         return failfast
-          
+  
 
 if __name__ == '__main__':
     unittest.main()

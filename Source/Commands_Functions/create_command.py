@@ -1,8 +1,8 @@
 import os, json
 from Commands_Functions.abstract_command import AbtractCommand
 from Commands_Functions.schema_keys import Keys
-from Output.exceptions import *
-from Output.status import Status
+from outputs.exceptions import *
+from outputs.status import Status
 
 class CreateCommand(AbtractCommand):
     def __init__(self, schema_path):
