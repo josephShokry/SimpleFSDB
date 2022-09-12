@@ -7,8 +7,3 @@ class Status(Enum):
     MissingInput = 3
     FileNotFound = 4
     WrongInput = 5
-    TableNotExist = 6 
-    RowExists = 7
-    DatabaseNotExist = 8
-    Primary_keyNotExist = 9
-    ColumnsNotExistInSchema = 10
