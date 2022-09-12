@@ -16,6 +16,6 @@ class CommandFactory:
         elif command_type == "get":
             return GetCommand()
         elif command_type == "set":
-            return SetCommand()
+            return SetCommand(args.data_base, args.table, args.value, args.disableoverwrite)
         else :
             raise WrongInput(status = Status.WrongInput, message = "wrong command")
