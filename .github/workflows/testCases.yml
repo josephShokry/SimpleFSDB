@@ -15,9 +15,5 @@ jobs:
         run : |
           python -m pip install --upgrade pip
       
-      - name : run test cases of create function
-        run : python tests\test_cases_create.py
-
-      - name : run test cases of set function
-        run : python tests\test_cases_set.py
-
+      - name : run test cases
+        run : python tests\test_cases.py
