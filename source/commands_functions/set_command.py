@@ -12,6 +12,7 @@ class SetCommand(AbtractCommand):
         - then will update the indices
        ''' 
        self.json_obj = self.__validate(data_base_name, table_name, value, disableoverwrite)
+       self.path = data_base_name + "\\" + table_name
 
     @staticmethod  
     def __validate(data_base_name, table_name, value, disableoverwrite):
@@ -24,7 +25,7 @@ class SetCommand(AbtractCommand):
         - coloumn exist
         - value is not compatible with the schema of the table
         '''
-        valuee = '{"id":"5" ,"first_name":"joseph", "last_name": "shokry","age":"20", "gender":"male","ali":"j"}'
+        valuee = '{"id":"5" ,"first_name":"joseph", "last_name": "shokry","age":"20", "gender":"male"}'
         val = eval(valuee)
         if data_base_name == None or table_name == None or value == None:
             raise WrongInput(message = "missing some inputs")
@@ -47,7 +48,7 @@ class SetCommand(AbtractCommand):
         if "id"  not in json_obj:
             raise WrongInput(message = "The value json text is invalid, it has not any id parameter")
 
-        if disableoverwrite and os.path.exists(data_base_name + "\\" + table_name + "\\" + json_obj["id"]):
+        if disableoverwrite and os.path.exists(data_base_name + "\\" + table_name + "\\" + json_obj["id"] + ".json"):
             raise RowExists()
 
         with open(data_base_name + "\\" + table_name + "\\" + "schema.json", 'r') as table_schema_file: 
@@ -63,12 +64,20 @@ class SetCommand(AbtractCommand):
         return json_obj
         
 
-        
+    def mk_new_file(self):
+        json_data = json.dumps(self.json_obj, indent = 2)
+        with open(self.path + "//" + self.json_obj["id"] + ".json", 'w') as row_file: 
+            row_file.write(json_data)
+
+    def update_indices(self):
+        pass
 
     def execute(self):
-        # mk_new_file()
-        # update_indices()
+        self.mk_new_file()
+        self.update_indices()
         pass
+
+
 
 
 '''
