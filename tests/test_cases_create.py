@@ -18,15 +18,17 @@ import os,sys
 from unittest.result import failfast
 import json
 
+
+
 sys.path.append(os.path.join(str(os.getcwd()).replace("tests", ''),"source"))
 from main import *
 from commands_functions.schema_keys import Keys
-from outputs.exceptions import WrongInput, MissingInput
+from outputs.exceptions import *
 
 
 main_path = os.path.join(os.getcwd(),"source")
 
-class test_functions(unittest.TestCase):
+class test_create_function(unittest.TestCase):
     def test_create_sch1(self):
         with open("tests\\testcases_schemas\sch1.txt", 'r')as schema_file:
             schema = json.load(schema_file)
@@ -113,7 +115,7 @@ class test_functions(unittest.TestCase):
         except WrongInput:
             pass
         return failfast
-  
+    
 
 if __name__ == '__main__':
     unittest.main()
