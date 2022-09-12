@@ -26,6 +26,7 @@ class SetCommand(AbtractCommand):
         - value is not compatible with the schema of the table
         '''
         valuee = '{"id":"5" ,"first_name":"joseph", "last_name": "shokry","age":"20", "gender":"male"}'
+
         val = eval(valuee)
         if data_base_name == None or table_name == None or value == None:
             raise WrongInput(message = "missing some inputs")
@@ -70,7 +71,37 @@ class SetCommand(AbtractCommand):
             row_file.write(json_data)
 
     def update_indices(self):
-        pass
+        table_schema_file = open(self.path + "\\" + "schema.json", "r")
+        table_schema_obj = json.load(table_schema_file)
+        
+        table_indices_file = open(self.path + "\\" + "indices.json","r+")
+        table_indices_obj = json.load(table_indices_file)
+        exist = False
+        for schema_indix in table_schema_obj["indices"]:
+            for index in table_indices_obj["indices"]:
+                if index["name"] == schema_indix:
+                    key = self.json_obj[schema_indix]
+                    for dict in index["values"]:
+                        if dict["key"] == key:
+                            if(str(self.json_obj["id"])not in dict["value"]):
+                                dict["value"].append(str(self.json_obj["id"]))
+                            exist = True
+                    if not exist:
+                        new_dict = {
+                            "key" : key,
+                            "value" : [str(self.json_obj["id"])]
+                        }
+                        index["values"].append(new_dict)
+        # print(table_indices_obj)
+        # print(type(table_indices_obj))
+        table_indices_file.close()
+        table_schema_file.close()
+        with open(self.path + "\\" + "indices.json","w") as table_indices_file:
+            json.dump(table_indices_obj,table_indices_file, indent = 2)
+        #table_indices_file.write(json_data)
+
+        
+
 
     def execute(self):
         self.mk_new_file()
