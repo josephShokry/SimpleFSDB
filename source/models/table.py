@@ -2,9 +2,10 @@ from abc import ABC
 import json, os
 from outputs.exceptions import *
 
-class Table(ABC):
+class TableMetaData(ABC):
     def loadTableSchema(self, DB_name, table_name):
         #validate that 2 para is not null
+        self.validate_DB_TB(DB_name, table_name)
         self.DB_name = DB_name
         self.table_name = table_name
         self.table_path = str(DB_name) + "\\" + str(table_name)
@@ -33,16 +34,16 @@ class Table(ABC):
     def getPrimaryKey(self):
         return self.schema_data["primary_key"]
 
-class table_set(Table):
+class Table(TableMetaData):
     def __init__(self,DB_name, TB_name):
-        super().validate_DB_TB(DB_name, TB_name)
+        self.loadTableSchema(DB_name, TB_name)
 
     def validate_overwrite(self,disable_overwrite,row_obj):
-        print("#################333")
-        print(disable_overwrite)
-        print(os.getcwd())
-        print(os.path.isfile(self.table_path + "\\" + self.getPrimaryKey() + ".json"))
-        print(os.path.isdir(self.table_path + "\\" + self.getPrimaryKey() ))
+        #print("#################333")
+        #print(disable_overwrite)
+        #print(os.getcwd())
+        #print(os.path.isfile(self.table_path + "\\" + self.getPrimaryKey() + ".json"))
+        #print(os.path.isdir(self.table_path + "\\" + self.getPrimaryKey() ))
         if disable_overwrite and os.path.isfile(self.table_path + "\\" + row_obj[self.getPrimaryKey()] + ".json"):
             raise RowExists
         
@@ -56,7 +57,7 @@ class table_set(Table):
         if value == None and value_path == None :
             raise WrongInput(message = "missing some inputs")
 
-        if value_path is not None:
+        if value_path is not None: # if he entered the path of the value which will be set
             if not os.path.isfile(value_path):
                 raise FileNotFound(message = "the value file is not found")
             else:
@@ -66,6 +67,7 @@ class table_set(Table):
                     except: raise WrongInput(message = "the json in the value path is not valid")
         elif value is None:
             raise WrongInput(message = "the value and the value path are both missed")
+        
         else:
             try:
                 json_obj = json.loads(value)
