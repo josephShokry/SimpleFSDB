@@ -18,8 +18,6 @@ import os,sys
 from unittest.result import failfast
 import json
 
-
-
 sys.path.append(os.path.join(str(os.getcwd()).replace("tests", ''),"source"))
 from main import *
 from commands_functions.schema_keys import Keys
