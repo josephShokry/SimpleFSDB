@@ -19,8 +19,10 @@ class CreateCommand(AbtractCommand):
 
     @staticmethod  
     def __validate(schema_path):
-        if schema_path == None or not os.path.exists(schema_path) :
+        if schema_path == None:
             raise MissingInput(status = Status.MissingInput, message = "the schema is missing")
+        if not os.path.exists(schema_path) :
+            raise FileNotFound(status = Status.FileNotFound, message = "the schema path is not valid")
         with open(schema_path, 'r') as schema: 
             try:
                 schema_data = json.load(schema)
@@ -44,7 +46,3 @@ class CreateCommand(AbtractCommand):
             for index in table[Keys.INDEX_KEY]: 
                 ind_path = os.path.join(indices_path, index)
                 os.makedirs(ind_path, exist_ok = True)
-
-            
-             
-                 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import json, os
+import os
 from outputs.exceptions import FileNotFound
 from models.table import Table
 
@@ -24,27 +24,26 @@ class index(ABC):
         table = Table(self.DB_name, self.table_name)
         for indexName in self.getIndicesNames():
             indices_path = self.indices_path + "\\" + indexName + "\\" + row_obj[indexName] + ".txt"
+            old_pks = set()
+            if os.path.isfile(indices_path):
+                old_pks = set(self.getPKs(indexName, row_obj[indexName]))                
+            old_pks.add(row_obj[table.getPrimaryKey()])
             with open(indices_path, mode ="w") as file:
-                old_pks = set(self.getPKs(indexName, row_obj[indexName]))
-                old_pks.add(row_obj[table.getPrimaryKey()])
-                file.write(",".join(old_pks)) ########the proplem is here not updated
-            
-            # index_file_data = ""
-            # if os.path.isfile(file_path):
-            #     with open(file_path,"r")as old_data:
-            #         index_file_data = old_data.read()
-            # with open(file_path,"w")as index_file:
-            #     if index_file_data != "":
-            #         index_file.write(index_file_data + "," + row_obj[table.getPrimaryKey()])
-            #     else : index_file.write(row_obj[table.getPrimaryKey()])
+                file.write(",".join(old_pks))
 
     def deleteIndices(self, row_obj):
         table = Table(self.DB_name, self.table_name)
         for indexName in self.getIndicesNames():
             index_path = self.indices_path + "\\" + indexName + "\\" + row_obj[indexName] + ".txt"
+            is_empty = False
             with open (index_path, "r")as index_file:
                 data = index_file.read().split(",")
                 data.remove(row_obj[table.getPrimaryKey()])
-                new_data = ",".join(data)
-            with open (index_path , "w")as index_file:
-                index_file.write(new_data)
+                if len(data)>0:
+                    new_data = ",".join(data)
+                    with open (index_path , "w")as index_file:
+                        index_file.write(new_data)
+                else :
+                    is_empty = True
+            if is_empty:
+                os.remove(index_path)

@@ -23,17 +23,9 @@ class SetCommand(AbtractCommand):
         new_row = dict()
         for column in self.table.getColumns():
             new_row[column] = self.json_obj[column]
-        self.table.writeNewRow(new_row,self.disableoverwrite)
+        if not self.disableoverwrite and os.path.isfile(self.table.table_path + "\\" + new_row[self.table.getPrimaryKey()] + ".json"):
+            with open(self.table.table_path + "\\" + new_row[self.table.getPrimaryKey()] + ".json", 'r') as old_row: 
+                old_obj = json.load(old_row)
+            self.indices.deleteIndices(old_obj)
+        self.table.writeNewRow(new_row, self.disableoverwrite)
         self.indices.addIndices(new_row)
-        
-        
-
-
-
-
-'''
-python main.py -cmd set -db csed2025 -tb Students -val
-'''
-'''
-"{\"id\": \"30\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"
-'''

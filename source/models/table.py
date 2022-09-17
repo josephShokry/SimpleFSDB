@@ -9,19 +9,20 @@ class Table(TableMetaData):
         self.loadTableSchema(DB_name, TB_name)
 
     def validate_overwrite(self,disable_overwrite,row_obj):
-        #print("#################333")
-        #print(disable_overwrite)
-        #print(os.getcwd())
-        #print(os.path.isfile(self.table_path + "\\" + self.getPrimaryKey() + ".json"))
-        #print(os.path.isdir(self.table_path + "\\" + self.getPrimaryKey() ))
         if disable_overwrite and os.path.isfile(self.table_path + "\\" + row_obj[self.getPrimaryKey()] + ".json"):
             raise RowExists
         
     def writeNewRow(self,row_obj, disable_overwrite):
         self.validate_overwrite(disable_overwrite,row_obj)
         json_data = json.dumps(row_obj, indent = 2)
+        is_duplicated = False
+        # if not disable_overwrite and os.path.isfile(self.table_path + "\\" + row_obj[self.getPrimaryKey()] + ".json"):
+        #     with open(self.table_path + "\\" + row_obj[self.getPrimaryKey()] + ".json", 'w') as row_file: 
+        #         old_row = json.load(row_file)
+        #     indices.deleteIndices(old_row)
         with open(self.table_path + "\\" + row_obj[self.getPrimaryKey()] + ".json", 'w') as row_file: 
             row_file.write(json_data)
+        return is_duplicated
     
     def load_value(self, value = None, value_path = None):
         if value == None and value_path == None :

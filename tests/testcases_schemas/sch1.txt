@@ -5,7 +5,7 @@
             "name" : "Students",
             "columns" : ["name", "age", "id"],
             "primary_key"  : "id",
-            "Index_SchemaKeys" : ["name"],
+            "Index_keys" : ["name"],
             "Consistently" : "Strong"
         }
      ] 
