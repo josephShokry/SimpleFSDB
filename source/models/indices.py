@@ -24,10 +24,11 @@ class index(ABC):
         table = Table(self.DB_name, self.table_name)
         for indexName in self.getIndicesNames():
             indices_path = self.indices_path + "\\" + indexName + "\\" + row_obj[indexName] + ".txt"
-            old_pks = set(self.getPKs(indexName, row_obj[indexName]))
-            old_pks.add(row_obj[table.getPrimaryKey()])
             with open(indices_path, mode ="w") as file:
-                file.write(",".join(old_pks)) 
+                old_pks = set(self.getPKs(indexName, row_obj[indexName]))
+                old_pks.add(row_obj[table.getPrimaryKey()])
+                file.write(",".join(old_pks)) ########the proplem is here not updated
+            
             # index_file_data = ""
             # if os.path.isfile(file_path):
             #     with open(file_path,"r")as old_data:

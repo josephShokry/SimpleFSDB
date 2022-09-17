@@ -3,9 +3,9 @@
     "Tables" : [
         {
             "name" : "Students", 
-            "columns" : ["name",  "age",  "id"],
+            "columns": ["id", "first_name", "last_name", "age", "gender"],
             "primary_key"  : "id", 
-            "Index_keys" : ["name"], 
+            "Index_keys" : ["first_name", "gender"],
             "Consistently" : "Strong"
         }, 
         {

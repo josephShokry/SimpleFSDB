@@ -16,9 +16,6 @@ class SetCommand(AbtractCommand):
             self.disableoverwrite = True
         else :
             self.disableoverwrite = False 
-        #self.disableoverwrite = disableoverwrite
-        # self.table.validate(disableoverwrite)
-        #  self.validate(data_base_name, table_name, value, disableoverwrite, value_path)
         self.indices = index(DB_name = database_name, table_name = table_name)
         self.json_obj = self.table.load_value(value = value,value_path = value_path)
 

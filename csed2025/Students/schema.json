@@ -1,0 +1,16 @@
+{
+  "name": "Students",
+  "columns": [
+    "id",
+    "first_name",
+    "last_name",
+    "age",
+    "gender"
+  ],
+  "primary_key": "id",
+  "Index_keys": [
+    "first_name",
+    "gender"
+  ],
+  "Consistently": "Strong"
+}

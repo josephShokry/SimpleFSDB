@@ -1,6 +1,0 @@
-{
-    "name": "Student",
-    "columns": ["id", "first_name", "last_name", "age", "gender"],
-    "indices" : ["first_name", "gender"],
-    "primary_key": "id"
-}
