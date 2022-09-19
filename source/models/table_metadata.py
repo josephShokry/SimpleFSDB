@@ -1,36 +1,28 @@
-from abc import ABC
 import json, os
 from commands_functions.schema_keys import Keys
 from outputs.exceptions import *
 
-class TableMetaData(ABC):
-    def loadTableSchema(self, DB_name, table_name):
-        #validate that 2 para is not null
-        self.validate_DB_TB(DB_name, table_name)
-        self.DB_name = DB_name
-        self.table_name = table_name
-        self.table_path = str(DB_name) + "\\" + str(table_name)
-        table_schema_path = self.table_path + "\\schema.json"
-        with open(table_schema_path,"r")as schema_file:
-            self.schema_data = json.load(schema_file)
-    
-    def validate_DB_TB(self, DB_name, TB_name):
-        if DB_name == None or TB_name == None :
-            raise WrongInput(message = "missing some inputs")
-        if not os.path.isdir(DB_name):
-            raise DatabaseNotExist()
+class TableMetaData():
+    def __init__(self, TB, table_shcema):
+        self.TB_schema = table_shcema
+        self.TB = TB
+        self.name = table_shcema[Keys.NAME]
+        self.columns = table_shcema[Keys.COLUMNS]
+        self.PK = table_shcema[Keys.PK]
+        self.index_keys = table_shcema[Keys.INDEX_KEY]
+        self.consistently = table_shcema[Keys.CONSISTENTLY]
 
-        if not os.path.exists(DB_name + "\\" + TB_name):
-            raise TableNotExist()
-    
-    def getTableName(self):
-        return self.schema_data[Keys.NAME]
+    def get_path(self):
+        return self.TB.get_path()
 
-    def getColumns(self):
-        return self.schema_data[Keys.COLUMNS]
+    def serialize_table_shcema(self):
+        TB_schemafile_path =  os.path.join(self.get_path(), self.TB.get_name() +".json" ) 
+        with open(TB_schemafile_path, 'w') as table_schema_file:
+            json.dump(self.TB_schema, table_schema_file,indent=2)
+        self.serialize_indecies()
 
-    def getIndices(self):
-        return self.schema_data[Keys.INDEX_KEY]
-        
-    def getPrimaryKey(self):
-        return self.schema_data[Keys.PK]
+    def serialize_indecies(self):
+        indeices_path = os.path.join(self.get_path(),"indices")
+        os.makedirs(indeices_path, exist_ok = True)
+        for index in self.index_keys: 
+                os.makedirs(os.path.join(indeices_path,index), exist_ok = True)
