@@ -11,7 +11,7 @@ class Index:
         os.makedirs(self.get_path(), exist_ok = True)
     
     def get_path(self):
-        return os.path.join(self.table.get_path(), "indices\\" + self.index_name)
+        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_name))
     
     def add_primary_key(self, primary_key, index_value):
         index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")

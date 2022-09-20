@@ -8,7 +8,7 @@ class Database:
     def __init__(self, database_name = None, schema_data = None):
         self.tables = {}
         if schema_data is not None:
-            self.__database_name = schema_data[Keys.database_name]
+            self.__database_name = schema_data[Keys.DATABASE_NAME]
             for table_schema in schema_data[Keys.TABLES]:
                 self.tables[table_schema[Keys.NAME]] = Table(self, table_schema = table_schema)
         else:

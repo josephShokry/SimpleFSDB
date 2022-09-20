@@ -23,8 +23,8 @@ class test_create_function(unittest.TestCase):
 
             #check if there is any problem
             check = True
-            check = os.path.isdir(os.path.join(parent_path, schema[Keys.database_name]))
-            parent_table_path = os.path.join(parent_path, schema[Keys.database_name])
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DATABASE_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DATABASE_NAME])
             for table in schema[Keys.TABLES]:
                 check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
             self.assertTrue(check)
@@ -38,8 +38,8 @@ class test_create_function(unittest.TestCase):
             cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch2.txt"
             os.system(cmd)
             check = True
-            check = os.path.isdir(os.path.join(parent_path, schema[Keys.database_name]))
-            parent_table_path = os.path.join(parent_path, schema[Keys.database_name])
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DATABASE_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DATABASE_NAME])
             for table in schema[Keys.TABLES]:
                 check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
             self.assertTrue(check)
@@ -53,11 +53,11 @@ class test_create_function(unittest.TestCase):
             cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch3.txt"
             os.system(cmd)
             check = True
-            check = os.path.isdir(os.path.join(parent_path, schema[Keys.database_name]))
-            parent_table_path = os.path.join(parent_path, schema[Keys.database_name])
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DATABASE_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DATABASE_NAME])
             for table in schema[Keys.TABLES]:
                 check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-            shutil.rmtree(os.path.join(parent_path,schema[Keys.database_name]))
+            shutil.rmtree(os.path.join(parent_path,schema[Keys.DATABASE_NAME]))
             self.assertTrue(check)
 
     def test_create_sch4(self):
@@ -69,11 +69,11 @@ class test_create_function(unittest.TestCase):
             cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\sch4.txt"
             os.system(cmd)
             check = True
-            check = os.path.isdir(os.path.join(parent_path, schema[Keys.database_name]))
-            parent_table_path = os.path.join(parent_path, schema[Keys.database_name])
+            check = os.path.isdir(os.path.join(parent_path, schema[Keys.DATABASE_NAME]))
+            parent_table_path = os.path.join(parent_path, schema[Keys.DATABASE_NAME])
             for table in schema[Keys.TABLES]:
                 check = os.path.isdir(os.path.join(parent_table_path, table[Keys.NAME]))
-            shutil.rmtree(os.path.join(parent_path,schema[Keys.database_name]))
+            shutil.rmtree(os.path.join(parent_path,schema[Keys.DATABASE_NAME]))
             self.assertTrue(check)
 
     def test_set_5(self):# missing the schema

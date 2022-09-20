@@ -9,7 +9,7 @@ class TableMetaData():
         self.table = table
         self.name = table_shcema[Keys.NAME]
         self.columns = table_shcema[Keys.COLUMNS]
-        self.primary_key = table_shcema[Keys.primary_key]
+        self.primary_key = table_shcema[Keys.PRIMARY_KEY]
         self.index_keys = table_shcema[Keys.INDEX_KEY]
         self.consistently = table_shcema[Keys.CONSISTENTLY]
         self.enable_overwrite = table_shcema[Keys.ENABLE_OVERWRITE]
