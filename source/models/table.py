@@ -7,25 +7,27 @@ from outputs.exceptions import *
 
 
 class Table:
-    def __init__(self, DB , table_name = None, table_schema = None):
+    def __init__(self, database , table_name = None, table_schema = None):
+        self.database = database
         if table_schema is not None:
-            self.__TB_name = table_schema[Keys.NAME]
+            self.__table_name = table_schema[Keys.NAME]
         else :
-            self.__TB_name = table_name
-        self.DB = DB
-        self.TB_schema_data = table_schema
-        self.TB_metadata = TableMetaData(self, table_schema)
+            self.__table_name = table_name
+            with open(self.get_path(),"r")as table_schema_file:
+                table_schema = json.load(table_schema_file)
+
+        self.table_metadata = TableMetaData(self, table_schema)
 
     def serialize(self):
 
         os.makedirs(self.get_path(),exist_ok = True)
-        self.TB_metadata.serialize_table_shcema()
+        self.table_metadata.serialize_table_shcema()
 
     def get_path(self):
-        return os.path.join(self.DB.get_path(), self.get_name())
+        return os.path.join(self.database.get_path(), self.get_name())
         
     def get_name(self):
-        return self.__TB_name
+        return self.__table_name
 
     def set(self):
         pass

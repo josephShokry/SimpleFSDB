@@ -1,5 +1,5 @@
 '''
-python main.py -cmd set -db csed2025 -tb Students -val
+python main.py -cmd set -database csed2025 -table Students -val
 '''
 '''
 "{\"id\": \"30\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"
