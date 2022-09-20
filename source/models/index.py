@@ -1,49 +1,45 @@
-from abc import ABC, abstractmethod
 import os
-from outputs.exceptions import FileNotFound
-from models.table import Table
+# from models.table import Table
+from outputs.exceptions import *
 
-class index(ABC):
-    def __init__(self, database_name, table_name):
-        self.indices_path = database_name + "\\" + table_name + "\\indices" 
-        self.database_name = database_name
-        self.table_name = table_name
+class Index:
+    def __init__(self, table, index_name):
+        self.table = table
+        self.index_name = index_name
 
-    def getIndicesNames(self):
-        return os.listdir(self.indices_path)
+    def serialize(self):
+        os.makedirs(self.get_path(), exist_ok = True)
+    
+    def get_path(self):
+        return os.path.join(self.table.get_path(), "indices\\" + self.index_name)
+    
+    def add_primary_key(self, primary_key, index_value):
+        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
+        old_primary_keys = set()
+        if os.path.isfile(index_value_file_path):
+            old_primary_keys = set(self.get_primary_key(index_value))                
+        old_primary_keys.add(primary_key)
+        Index.__write_in_file(path = index_value_file_path, data = old_primary_keys)
+    
+    def delete_primary_key(self, primary_key, index_value):
+        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
+        if not os.path.isfile(index_value_file_path):
+            raise FileNotFound(message = "there is no file with this index : " + index_value)
+        old_primary_keys = self.get_primary_key(index_value)
+        old_primary_keys.remove(primary_key)
+        Index.__write_in_file(path = index_value_file_path, data = old_primary_keys)
 
-    def getprimary_keys(self, indexName, index):
-        file_path = self.indices_path + "\\" + indexName + "\\" + index + ".txt"
-        if not os.path.isfile(file_path):
-            raise FileNotFound(message = "this index has not been saved to the database yet")
-        with open(file_path,"r")as primary_keys:
-            primary_keys = primary_keys.read().split(",")
+    def get_primary_key(self, index_value):
+        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
+        with open(index_value_file_path, mode ="r") as index_file:
+            primary_keys = index_file.read().split(",")
         return primary_keys
     
-    def addIndices(self, row_obj):
-        table = Table(self.database_name, self.table_name)
-        for indexName in self.getIndicesNames():
-            indices_path = self.indices_path + "\\" + indexName + "\\" + row_obj[indexName] + ".txt"
-            old_primary_keys = set()
-            if os.path.isfile(indices_path):
-                old_primary_keys = set(self.getprimary_keys(indexName, row_obj[indexName]))                
-            old_primary_keys.add(row_obj[table.getPrimaryKey()])
-            with open(indices_path, mode ="w") as file:
-                file.write(",".join(old_primary_keys))
+    def update_primary_key(self, primary_key, index_value):
+        self.delete_primary_key(primary_key = primary_key, index_value = index_value)
+        self.add_primary_key(primary_key = primary_key, index_value = index_value)
 
-    def deleteIndices(self, row_obj):
-        table = Table(self.database_name, self.table_name)
-        for indexName in self.getIndicesNames():
-            index_path = self.indices_path + "\\" + indexName + "\\" + row_obj[indexName] + ".txt"
-            is_empty = False
-            with open (index_path, "r")as index_file:
-                data = index_file.read().split(",")
-                data.remove(row_obj[table.getPrimaryKey()])
-                if len(data)>0:
-                    new_data = ",".join(data)
-                    with open (index_path , "w")as index_file:
-                        index_file.write(new_data)
-                else :
-                    is_empty = True
-            if is_empty:
-                os.remove(index_path)
+    @staticmethod
+    def __write_in_file(path, data):
+        with open(path, mode ="w") as index_file:
+            index_file.write(",".join(data))

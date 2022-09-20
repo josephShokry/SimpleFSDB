@@ -1,6 +1,7 @@
 import json, os
 from commands_functions.schema_keys import Keys
 from outputs.exceptions import *
+from models.index import Index
 
 class TableMetaData():
     def __init__(self, table, table_shcema):
@@ -23,7 +24,7 @@ class TableMetaData():
         self.serialize_indecies()
 
     def serialize_indecies(self):
-        indeices_path = os.path.join(self.get_path(),"indices")
-        os.makedirs(indeices_path, exist_ok = True)
-        for index in self.index_keys: 
-                os.makedirs(os.path.join(indeices_path,index), exist_ok = True)
+        os.makedirs(os.path.join(self.get_path(),"indices"), exist_ok = True)
+        for index_name in self.index_keys: 
+            index = Index(table = self.table, index_name = index_name)
+            index.serialize()
