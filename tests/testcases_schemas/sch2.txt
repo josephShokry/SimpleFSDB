@@ -6,14 +6,16 @@
             "columns" : ["name", "age", "id"],
             "primary_key"  : "id",
             "Index_keys" : ["name"],
-            "Consistently" : "Strong"
+            "consistently" : "Strong",
+            "enable_overwrite" : "true"
         },
         {
             "name" : "reservation",
             "columns" : ["fname","lname", "age", "id"],
             "primary_key"  : "id",
             "Index_keys" : ["fname"],
-            "Consistently" : "Strong"
+            "consistently" : "Strong",
+            "enable_overwrite" : "false"
         }
      ] 
 }

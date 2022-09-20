@@ -8,4 +8,5 @@ class Keys(ABC):
     COLUMNS = "columns"
     primary_key = "primary_key"
     INDEX_KEY = "Index_keys"
-    CONSISTENTLY = "Consistently"
+    CONSISTENTLY = "consistently"
+    ENABLE_OVERWRITE = "enable_overwrite"

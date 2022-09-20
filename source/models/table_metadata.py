@@ -11,6 +11,7 @@ class TableMetaData():
         self.primary_key = table_shcema[Keys.primary_key]
         self.index_keys = table_shcema[Keys.INDEX_KEY]
         self.consistently = table_shcema[Keys.CONSISTENTLY]
+        self.enable_overwrite = table_shcema[Keys.ENABLE_OVERWRITE]
 
     def get_path(self):
         return self.table.get_path()
