@@ -25,6 +25,6 @@ class TableMetaData():
 
     def serialize_indecies(self):
         os.makedirs(os.path.join(self.get_path(),"indices"), exist_ok = True)
-        for index_name in self.index_keys: 
-            index = Index(table = self.table, index_name = index_name)
+        for index_value in self.index_keys: 
+            index = Index(table = self.table, index_value = index_value)
             index.serialize()

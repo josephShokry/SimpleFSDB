@@ -10,13 +10,20 @@ class Table:
     def __init__(self, database , table_name = None, table_schema = None):
         self.database = database
         if table_schema is not None:
-            self.__table_name = table_schema[Keys.NAME]
+            self.__init_by_schema(table_schema = table_schema)
+        elif table_name is not None:
+            self.__init_by_name(table_name = table_name)
         else :
-            self.__table_name = table_name
-            with open(self.get_path(),"r")as table_schema_file:
-                table_schema = json.load(table_schema_file)
-
+            raise WrongInput(message = "the table name and table schema data are null")
         self.table_metadata = TableMetaData(self, table_schema)
+
+    def __init_by_schema(self, table_schema):
+        self.__table_name = table_schema[Keys.NAME]
+
+    def __init_by_name(self, table_name):
+        self.__table_name = table_name
+        with open(self.get_path(),"r")as table_schema_file:
+            table_schema = json.load(table_schema_file)
 
     def serialize(self):
 

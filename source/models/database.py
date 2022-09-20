@@ -8,13 +8,21 @@ class Database:
     def __init__(self, database_name = None, schema_data = None):
         self.tables = {}
         if schema_data is not None:
-            self.__database_name = schema_data[Keys.DATABASE_NAME]
-            for table_schema in schema_data[Keys.TABLES]:
-                self.tables[table_schema[Keys.NAME]] = Table(self, table_schema = table_schema)
-        else:
-            for table_name in os.listdir(self.get_path()):
-                self.tables[table_name] = Table(self, table_name = table_name)
-            self.__database_name = database_name
+            self.__init_by_schema(schema_data = schema_data)
+        elif database_name is not None:
+            self.__init_by_name(database_name = database_name)
+        else :
+            raise WrongInput(message = "the database name and schema data are null")
+            
+    def __init_by_schema(self, schema_data):
+        self.__database_name = schema_data[Keys.DATABASE_NAME]
+        for table_schema in schema_data[Keys.TABLES]:
+            self.tables[table_schema[Keys.NAME]] = Table(self, table_schema = table_schema)
+
+    def __init_by_name(self, database_name):
+        for table_name in os.listdir(self.get_path()):
+            self.tables[table_name] = Table(self, table_name = table_name)
+        
 
     def serialize(self):
         os.makedirs(self.get_path(), exist_ok = True)

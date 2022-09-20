@@ -3,15 +3,15 @@ import os
 from outputs.exceptions import *
 
 class Index:
-    def __init__(self, table, index_name):
+    def __init__(self, table, index_value):
         self.table = table
-        self.index_name = index_name
+        self.index_value = index_value
 
     def serialize(self):
         os.makedirs(self.get_path(), exist_ok = True)
     
     def get_path(self):
-        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_name))
+        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_value))
     
     def add_primary_key(self, primary_key, index_value):
         index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
