@@ -3,21 +3,22 @@ import os
 from outputs.exceptions import *
 
 class Index:
-    def __init__(self, table, index_value):
+    def __init__(self, table, index_name, index_value = None):
         self.table = table
+        self.index_name = index_name
         self.index_value = index_value
 
     def serialize(self):
         os.makedirs(self.get_path(), exist_ok = True)
     
     def get_path(self):
-        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_value))
+        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_name))
     
-    def add_primary_key(self, primary_key, index_value):
-        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
+    def add_primary_key(self, primary_key):
+        index_value_file_path = os.path.join(self.get_path(), self.index_value + ".txt")
         old_primary_keys = set()
         if os.path.isfile(index_value_file_path):
-            old_primary_keys = set(self.get_primary_key(index_value))                
+            old_primary_keys = set(self.get_primary_key(self.index_value))                
         old_primary_keys.add(primary_key)
         Index.__write_in_file(path = index_value_file_path, data = old_primary_keys)
     
