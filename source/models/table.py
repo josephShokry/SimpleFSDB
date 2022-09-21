@@ -12,7 +12,7 @@ class Table:
         if table_schema is not None:
             self.__init_by_schema(table_schema = table_schema)
         elif table_name is not None:
-            self.__init_by_name(table_name = table_name)
+            table_schema = self.__init_by_name(table_name = table_name)
         else :
             raise WrongInput(message = "the table name and table schema data are null")
         self.table_metadata = TableMetaData(self, table_schema)
@@ -22,8 +22,9 @@ class Table:
 
     def __init_by_name(self, table_name):
         self.__table_name = table_name
-        with open(self.get_path(),"r")as table_schema_file:
+        with open(os.path.join(self.get_path(), "schema.json"),"r")as table_schema_file:
             table_schema = json.load(table_schema_file)
+            return table_schema
 
     def serialize(self):
 
