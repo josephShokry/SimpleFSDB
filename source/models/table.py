@@ -22,6 +22,7 @@ class Table:
 
     def __init_by_name(self, table_name):
         self.__table_name = table_name
+        self.__table_name_validate()
         with open(os.path.join(self.get_path(), "schema.json"),"r")as table_schema_file:
             table_schema = json.load(table_schema_file)
         return table_schema
@@ -54,3 +55,7 @@ class Table:
         for index_name in self.table_metadata.index_keys:
             index = Index(self, index_name = index_name, index_value = row[index_name])
             index.add_primary_key(primary_key = primary_key)
+    
+    def __table_name_validate(self):
+        if not os.path.isdir(self.get_path()):
+            raise TableNotExist(message = "the database name you entered is not valid or database is not exist")

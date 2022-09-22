@@ -1,97 +1,115 @@
-import unittest, os, sys
-pa = os.getcwd()
-p1 = os.path.join(os.path.dirname(__file__),"..")
-p2 = os.pardir
-root_dir = os.path.abspath(os.path.join(p1, "source"))
-sys.path.append(root_dir)
-
+import shutil
+import unittest,sys,os,json
+sys.path.append(os.path.join(os.getcwd(),"source"))
+from commands_functions.schema_keys import Keys
+from commands_functions.set_command import SetCommand
 from outputs.exceptions import *
-# sys.path.append(pa)
-
-main_path = os.path.join(os.getcwd(),"source")
+from outputs.output import *
 
 class test_set_function(unittest.TestCase):
-    def test_set_1(self):# not giving the database name
-        os.system(main_path)
-        cmd = "python source\main.py -cmd set"
+    def test_set_1(self): # raw is already exist
+        print('test # 1')
         try:
-            os.system(cmd)
-        except e:
-            self.assertEqual(e,WrongInput)
-            pass
-        
-    def test_set_2(self):# not giving the table name
-        os.system(main_path)
-        cmd = "python source\main.py -cmd set -db csed2025"
-        try:
-            os.system(cmd)
-        except WrongInput:
-            pass
-  
-    def test_set_3(self):# not giving the value 
-        os.system(main_path)
-        cmd = "python source\main.py -cmd set -db sced2025 -tb Student"
-        try:
-            os.system(cmd)
-        except WrongInput:
-            pass
+           result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except RowExists as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
 
-    def test_set_4(self):# giving wrong db name or db not exist
-        os.system(main_path)
-        cmd = "python main.py -cmd set -db cseddd2025 -tb Students -val "'{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}'""
+    def test_set_2(self):# not giving the database name
+        print('test # 2')
         try:
-            os.system(cmd)
-        except DatabaseNotExist:
-            pass
+           result = SetCommand(None, "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except WrongInput as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
+
+
+    def test_set_3(self):# not giving the table name
+        print('test # 3')
+        try:
+           result = SetCommand("csed2025",None,"{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except WrongInput as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
+
+
+    def test_set_4(self):# not giving the value
+        print('test # 4')
+        try:
+           result = SetCommand("csed2025", "Students",None,).execute()   
+           output_object = outputs(result)
+        except WrongInput as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
+
+
+    def test_set_5(self):# giving wrong db name or db not exist
+        print('test # 5')
+        try:
+           result = SetCommand("cssssed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except DatabaseNotExist as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
     
-    def test_set_5(self):# giving wrong table name or table not exist
-        os.system(main_path)
-        cmd = "python main.py -cmd set -db csed2025 -tb Studenttts -val "'{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}'""
+    def test_set_6(self):# giving wrong table name or table not exist
+        print('test # 6')
         try:
-            os.system(cmd)
-        except TableNotExist:
-            pass
+           result = SetCommand("csed2025", "Studeeenttts","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except TableNotExist as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
 
-    #not implemented yet as i hard coded the value
+    # def test_set_7(self):# the givin value does not have id coloumn
+    #     print('test # 7')
+    #     try:
+    #        result = SetCommand("csed2025", "Students","{\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+    #        output_object = outputs(result)
+    #     except WrongInput as e:
+    #        output_object = outputs(exception = e, result = None)
+    #     print(json.dumps(output_object.__dict__, indent = 2))
 
-    def test_set_6(self):# the givin value does not have id coloumn
-        os.system(main_path)
-        cmd = "python main.py -cmd set -db csed2025 -tb Students -val "'{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}'""
-        try:
-            os.system(cmd)
-        except DatabaseNotExist:
-            pass
 
-    def test_set_7(self):# row exist and disable overwrite is ture 
-        os.system(main_path)
-        cmd = 'python main.py -cmd set -db csed2025 -tb Students -val "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"'
-        with self.assertRaises(RowExists):
-            os.system(cmd)
-        # self.assertRaises(RowExists, os.system(cmd))
-        # try:os.system(cmd)
-        # except e:
-        #     self.assertEqual(e, RowExists)
-        #     pass
+    # def test_set_8(self):# miss match of the coloumns of the value with the table schema
+    #     print('test # 8')
+    #     try:
+    #        result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"firrrrrrst_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+    #        output_object = outputs(result)
+    #     except ColumnsNotExistInSchema as e:
+    #        output_object = outputs(exception = e, result = None)
+    #     print(json.dumps(output_object.__dict__, indent = 2))
 
-    # not implemented yet as i hard coded the value
-    def test_set_8(self):# miss match of the coloumns of the value with the table schema
-        os.system(main_path)
-        cmd = "python main.py -cmd set -db csed2025 -tb Studenttts -val "'{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}'""
-        try:
-            os.system(cmd)
-        except TableNotExist:
-            pass
-    
-    # def test_set_9(self):#make new row no dublicate PK no dublicate index
-    #     os.system(main_path)
-    #     cmd = "python main.py -cmd set -db csed2025 -tb Studenttts -val "'{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}'""
+
+    # def test_set_9(self):#make new row with dublicate PK with able over write
+    #     print('test # 9')
+    #     try:
+    #        result = SetCommand("csed2025", "Students","{\"id\":\"90\",\"first_name\": \"joseph\",\"last_name\": \"sssshokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+    #        output_object = outputs(result)
+    #     except FileNotFound as e:
+    #        output_object = outputs(exception = e, result = None)
+    #     print(json.dumps(output_object.__dict__, indent = 2))
+
+
     # def test_set_10(self):#make new row with dublicate PK with disable over write
-
-    # def test_set_11(self):#make new row with dublicate PK with  over write
-
-    # def test_set_12(self):#make new row no dublicate PK  dublicate index
-
-        
-
+    #     print('test # 10')
+    #     try:
+    #        result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"jjjjjjoseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+    #        output_object = outputs(result)
+    #     except RowExists as e:
+    #        output_object = outputs(exception = e, result = None)
+    #     print(json.dumps(output_object.__dict__, indent = 2))
+   
 if __name__ == '__main__':
-    unittest.main()
+   main_path = os.getcwd()
+   schema = None
+   with open("tests\\testcases_schemas\schema.txt", 'r')as schema_file:
+      schema = json.load(schema_file)
+      os.system(main_path)
+      cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\schema.txt"
+      os.system(cmd)
+   unittest.main(exit=False)
+   shutil.rmtree(os.path.join(main_path,schema[Keys.DATABASE_NAME]))

@@ -21,6 +21,7 @@ class Database:
 
     def __init_by_name(self, database_name):
         self.__database_name = database_name
+        self.__database_name_validate()
         for table_name in os.listdir(self.get_path()):
             self.tables[table_name] = Table(self, table_name = table_name)
         
@@ -49,3 +50,7 @@ class Database:
     
     def get_name(self):
         return self.__database_name
+    
+    def __database_name_validate(self):
+        if not os.path.isdir(self.get_path()):
+            raise DatabaseNotExist(message = "the database name you entered is not valid or database is not exist")
