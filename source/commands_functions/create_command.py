@@ -1,5 +1,4 @@
 from commands_functions.abstract_command import AbtractCommand
-from commands_functions.schema_keys import Keys
 from models.database import Database
 from outputs.exceptions import *
 from outputs.status import Status
@@ -9,7 +8,6 @@ import os, json
 
 class CreateCommand(AbtractCommand):
     def __init__(self, schema_path):
-        self.schema_path = schema_path
         self.schema_data = self.__validate_schema_path(schema_path)
 
     def execute(self):
