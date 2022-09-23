@@ -7,28 +7,28 @@ class Index:
         self.index_value = index_value
 
     def serialize(self):
-        os.makedirs(self.get_index_name_path(), exist_ok = True)
+        os.makedirs(self.get_path(), exist_ok = True)
     
-    def get_index_name_path(self):
-        return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_value))
-
-    def get_index_value_path(self):
-        return os.path.join(self.get_index_name_path(), self.index_value + ".txt")
+    def get_path(self, index_value = None):
+        if index_value == None:
+            return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_value))
+        else:
+            return os.path.join(self.get_path(), self.index_value + ".txt")
 
     def add_primary_key(self, primary_key, index_value):
         old_primary_keys = set(self.get_primary_key(index_value))                
         old_primary_keys.add(primary_key)
-        Index.__write_in_file(path = self.get_index_value_path(index_value), data = old_primary_keys)
+        Index.__write_in_file(path = self.get_path(index_value), data = old_primary_keys)
     
     def delete_primary_key(self, primary_key, index_value):
         old_primary_keys = self.get_primary_key(index_value)
         old_primary_keys.remove(primary_key)
-        Index.__write_in_file(path = self.get_index_value_path(index_value), data = old_primary_keys)
+        Index.__write_in_file(path = self.get_path(index_value), data = old_primary_keys)
 
     def get_primary_key(self, index_value):
-        if not os.path.isfile(self.get_index_value_path(index_value)):
+        if not os.path.isfile(self.get_path(index_value)):
             return []
-        with open(self.get_index_value_path(index_value), mode ="r") as index_file:
+        with open(self.get_path(index_value), mode ="r") as index_file:
             primary_keys = index_file.read().split(",")
         return primary_keys
     
