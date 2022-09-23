@@ -7,28 +7,28 @@ class Index:
         self.index_value = index_value
 
     def serialize(self):
-        os.makedirs(self.get_path(), exist_ok = True)
+        os.makedirs(self.get_index_name_path(), exist_ok = True)
     
-    def get_path(self):
+    def get_index_name_path(self):
         return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_value))
-    
+
+    def get_index_value_path(self):
+        return os.path.join(self.get_index_name_path(), self.index_value + ".txt")
+
     def add_primary_key(self, primary_key, index_value):
-        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
         old_primary_keys = set(self.get_primary_key(index_value))                
         old_primary_keys.add(primary_key)
-        Index.__write_in_file(path = index_value_file_path, data = old_primary_keys)
+        Index.__write_in_file(path = self.get_index_value_path(index_value), data = old_primary_keys)
     
     def delete_primary_key(self, primary_key, index_value):
-        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
         old_primary_keys = self.get_primary_key(index_value)
         old_primary_keys.remove(primary_key)
-        Index.__write_in_file(path = index_value_file_path, data = old_primary_keys)
+        Index.__write_in_file(path = self.get_index_value_path(index_value), data = old_primary_keys)
 
     def get_primary_key(self, index_value):
-        index_value_file_path = os.path.join(self.get_path(), index_value + ".txt")
-        if not os.path.isfile(index_value_file_path):
+        if not os.path.isfile(self.get_index_value_path(index_value)):
             return []
-        with open(index_value_file_path, mode ="r") as index_file:
+        with open(self.get_index_value_path(index_value), mode ="r") as index_file:
             primary_keys = index_file.read().split(",")
         return primary_keys
     
@@ -36,7 +36,6 @@ class Index:
         self.delete_primary_key(primary_key = primary_key, index_value = index_value)
         self.add_primary_key(primary_key = primary_key, index_value = index_value)
 
-    @staticmethod
-    def __write_in_file(path, data):
-        with open(path, mode ="w") as index_file:
+    def __write_in_file(self, data):
+        with open(self.get_index_value_path(self.index_value), mode ="w") as index_file:
             index_file.write(",".join(data))
