@@ -2,10 +2,11 @@ from abc import ABC
 
 class Keys(ABC):
     SCHEMA = "schema"
-    DB_NAME = "database_name"
+    DATABASE_NAME = "database_name"
     TABLES  = "Tables"
     NAME = "name"
     COLUMNS = "columns"
-    PK = "primary_key"
+    PRIMARY_KEY = "primary_key"
     INDEX_KEY = "Index_keys"
-    CONSISTENTLY = "Consistently"
+    CONSISTENTLY = "consistently"
+    ENABLE_OVERWRITE = "enable_overwrite"

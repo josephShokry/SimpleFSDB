@@ -1,4 +1,4 @@
-from abc import ABCMeta,abstractclassmethod, abstractstaticmethod
+from abc import ABCMeta, abstractstaticmethod
 
 class AbtractCommand(metaclass = ABCMeta):
     @abstractstaticmethod

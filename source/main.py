@@ -1,6 +1,9 @@
 import parsing, json
 from outputs.output import outputs
-from Commands_Functions.command_factory import CommandFactory
+from commands_functions.command_factory import CommandFactory
+import os, sys
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.append(root_dir)
 
 if __name__=='__main__':
     try:

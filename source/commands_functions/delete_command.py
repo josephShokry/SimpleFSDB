@@ -1,6 +1,6 @@
 import os, json
-from Commands_Functions.abstract_command import AbtractCommand
-from Commands_Functions.schema_keys import Keys
+from commands_functions.abstract_command import AbtractCommand
+from commands_functions.schema_keys import Keys
 from outputs.status import Status
 
 class DeleteCommand(AbtractCommand):

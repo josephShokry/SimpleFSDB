@@ -1,9 +1,9 @@
-from create_command import CreateCommand
-from delete_command import DeleteCommand
-from get_command import GetCommand
-from set_command import SetCommand
-from output.exceptions import *
-from output.status import Status
+from commands_functions.create_command import *
+from commands_functions.delete_command import *
+from commands_functions.get_command import *
+from commands_functions.set_command import *
+from outputs.exceptions import *
+from outputs.status import Status
 
 class CommandFactory:
     @staticmethod
@@ -16,6 +16,6 @@ class CommandFactory:
         elif command_type == "get":
             return GetCommand()
         elif command_type == "set":
-            return SetCommand()
+            return SetCommand(args.data_base, args.table, args.value, args.value_path)
         else :
             raise WrongInput(status = Status.WrongInput, message = "wrong command")
