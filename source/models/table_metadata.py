@@ -18,13 +18,13 @@ class TableMetaData():
         return self.table.get_path()
 
     def serialize_table_shcema(self):
-        table_schemafile_path =  os.path.join(self.get_path(), self.table.get_name() +".json" ) 
+        table_schemafile_path =  os.path.join(self.get_path(), "schema.json" ) 
         with open(table_schemafile_path, 'w') as table_schema_file:
             json.dump(self.table_schema, table_schema_file,indent=2)
         self.serialize_indecies()
 
     def serialize_indecies(self):
         os.makedirs(os.path.join(self.get_path(),"indices"), exist_ok = True)
-        for index_value in self.index_keys: 
-            index = Index(table = self.table, index_value = index_value)
+        for index_name in self.index_keys: 
+            index = Index(table = self.table, index_name = index_name)
             index.serialize()

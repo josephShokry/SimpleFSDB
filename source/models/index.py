@@ -1,9 +1,11 @@
 import os
+# from models.table import Table
 from outputs.exceptions import *
 
 class Index:
-    def __init__(self, table, index_value):
+    def __init__(self, table, index_name, index_value = None):
         self.table = table
+        self.index_name = index_name
         self.index_value = index_value
 
     def serialize(self):
@@ -29,6 +31,7 @@ class Index:
         if not os.path.isfile(self.get_path(index_value)):
             return []
         with open(self.get_path(index_value), mode ="r") as index_file:
+
             primary_keys = index_file.read().split(",")
         return primary_keys
     
@@ -38,4 +41,3 @@ class Index:
 
     def __write_in_file(self, data):
         with open(self.get_index_value_path(self.index_value), mode ="w") as index_file:
-            index_file.write(",".join(data))
