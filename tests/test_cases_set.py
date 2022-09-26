@@ -74,14 +74,14 @@ class test_set_function(unittest.TestCase):
     #     print(json.dumps(output_object.__dict__, indent = 2))
 
 
-    # def test_set_8(self):# miss match of the coloumns of the value with the table schema
-    #     print('test # 8')
-    #     try:
-    #        result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"firrrrrrst_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
-    #        output_object = outputs(result)
-    #     except ColumnsNotExistInSchema as e:
-    #        output_object = outputs(exception = e, result = None)
-    #     print(json.dumps(output_object.__dict__, indent = 2))
+    def test_set_8(self):# miss match of the coloumns of the value with the table schema
+        print('test # 8')
+        try:
+           result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"firrrrrrst_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+           output_object = outputs(result)
+        except ColumnsNotExistInSchema as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__, indent = 2))
 
 
     # def test_set_9(self):#make new row with dublicate PK with able over write

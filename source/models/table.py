@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import json, os
+import uuid
 from commands_functions.schema_keys import Keys
 from models.table_metadata import TableMetaData
 from outputs.exceptions import *
@@ -38,8 +39,11 @@ class Table:
         return self.__table_name
 
     def set(self, row):
+        self.__colomns_name_validate(row = row)
+        if self.table_metadata.primary_key not in row : 
+            row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
         row_json_data = json.dumps(row, indent = 2)
-        with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'w') as row_file: 
+        with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
             row_file.write(row_json_data)
         self.update_indx(row)
 
@@ -59,3 +63,8 @@ class Table:
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise TableNotExist(message = "the database name you entered is not valid or database is not exist")
+
+    def __colomns_name_validate(self, row):
+        for row_colomn_name in row:
+            if row_colomn_name not in self.table_metadata.columns:
+                raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.__table_name + " table")
