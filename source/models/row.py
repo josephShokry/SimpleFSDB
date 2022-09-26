@@ -58,14 +58,16 @@ class Row:
         self.__unlock()
 
     def __lock(self):
-        lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock", self.primary_key + ".json"))
-        try:
-            with open(lock_file_path, "x"):
+        while True:
+            try:
+                with open(self.__get_lock_path(), "x"):
+                    break
+            except:
                 pass
-        except:
-            while os.path.isfile(lock_file_path):
-                time.sleep(1)
 
     def __unlock(self):
         lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock",self.primary_key + ".json"))
         os.remove(lock_file_path)
+
+    def __get_lock_path(self):
+        return os.path.join(self.table.get_path(), os.path.join("Lock", self.primary_key + ".json"))
