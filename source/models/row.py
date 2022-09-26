@@ -1,5 +1,5 @@
 import os, json, uuid
-from commands_functions.schema_keys import Keys
+import time
 from outputs.exceptions import *
 from models.index import Index
 
@@ -26,7 +26,7 @@ class Row:
         return os.path.isfile(self.get_path())
 
     def get_path(self):
-        return os.path.join(self.table.get_path(),os.path.join("Data", self.primary_key + ".json"))
+        return os.path.join(self.table.get_path(), os.path.join("Data", self.primary_key + ".json"))
 
     def __colomns_name_validate(self):
         for row_colomn_name in self.value:
@@ -36,7 +36,7 @@ class Row:
     def update_index(self):
         for index_name in self.table.table_metadata.index_keys:
             index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
-            index.update_primary_key(primary_key = self.primary_key) ##update
+            index.update_primary_key(primary_key = self.primary_key) 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
@@ -58,14 +58,15 @@ class Row:
         self.__unlock()
 
     def __lock(self):
-        lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock", self.primary_key + ".json"))
-        try:
-            with open(lock_file_path, "x")as lock_file:
+        while True:
+            try:
+                with open(self.__get_lock_path(), "x"):
+                    break
+            except:
                 pass
-        except:
-            raise FileNotFound(message = "the primary key is locked now try again later")
 
     def __unlock(self):
-        lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock",self.primary_key + ".json"))
-        os.remove(lock_file_path)
-        pass
+        os.remove(self.__get_lock_path())
+
+    def __get_lock_path(self):
+        return os.path.join(self.table.get_path(), os.path.join("Lock", self.primary_key + ".json"))
