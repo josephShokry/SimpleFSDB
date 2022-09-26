@@ -66,8 +66,7 @@ class Row:
                 pass
 
     def __unlock(self):
-        lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock",self.primary_key + ".json"))
-        os.remove(lock_file_path)
+        os.remove(self.__get_lock_path())
 
     def __get_lock_path(self):
         return os.path.join(self.table.get_path(), os.path.join("Lock", self.primary_key + ".json"))
