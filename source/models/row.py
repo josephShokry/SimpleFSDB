@@ -4,22 +4,23 @@ from outputs.exceptions import *
 from models.index import Index
 
 class Row:
-    def __init__(self, table, value = None, primary_key = None):
+    def __init__(self, table, value = None):
         self.table = table
-        if value is not None:
-            self.__init_by_value(value)
-        elif primary_key is not None:
-            self.__init_by_primary_key()
-        else:
-            raise WrongInput(message = "the value and PK of the row is null")
-        
-    def __init_by_value(self, value):
         self.value = value
         self.primary_key = value[self.table.table_metadata.primary_key]
 
-    def __init_by_primary_key(self,primary_key):
-        self.primary_key = primary_key
-        self.__get_by_primary_key()
+        # if value is not None:
+        #     self.__init_by_value(value)
+        # elif primary_key is not None:
+        #     self.__init_by_primary_key()
+        # else:
+        #     raise WrongInput(message = "the value and PK of the row is null")
+        
+    # def __init_by_value(self, value):
+
+    # def __init_by_primary_key(self,primary_key):
+        # self.primary_key = primary_key
+        # self.__get_by_primary_key()
 
     def serialize(self):
         self.__colomns_name_validate()
@@ -46,11 +47,14 @@ class Row:
             index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
             index.update_primary_key(primary_key = self.primary_key) ##update
     
-    def __get_by_primary_key(self):
-        if not self.row_exists():
+    @staticmethod
+    def __load_by_primary_key(table, primary_key):
+        row_file_path = os.path.join(table.get_path(), primary_key + ".json")
+        if not os.path.isfile(row_file_path) :
             return None
-        with open(self.get_path(), 'r') as row_file:
-            self.value = json.load(row_file)
+        with open(row_file_path, 'r') as row_file:
+            value = json.load(row_file)
+        return Row(value = value)
 
     def delete(self):
         if self.row_exists():
