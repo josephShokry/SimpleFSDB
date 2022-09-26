@@ -5,8 +5,6 @@ from outputs.exceptions import *
 from outputs.status import Status
 import os, json
 
-
-
 class CreateCommand(AbtractCommand):
     def __init__(self, schema_path):
         self.schema_data = self.__validate_schema_path(schema_path)

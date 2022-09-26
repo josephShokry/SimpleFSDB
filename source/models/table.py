@@ -43,9 +43,15 @@ class Table:
         if self.table_metadata.primary_key not in row : 
             row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
         row_json_data = json.dumps(row, indent = 2)
-        with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
-            row_file.write(row_json_data)
-        self.update_indx(row)
+        if self.table_metadata.enable_overwrite == "false" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
+            raise WrongInput(message = "this file is already exsist")
+        elif self.table_metadata.enable_overwrite == "true" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
+            self.delete() ##delete the file and indecis
+            self.write()  ##write the file
+        else:  
+            with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
+                row_file.write(row_json_data)
+            self.update_indx(row)
 
     
     def get(self):
@@ -68,3 +74,6 @@ class Table:
         for row_colomn_name in row:
             if row_colomn_name not in self.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.__table_name + " table")
+    
+    def get_primary_keys(self):
+        return os.listdir(self.get_path())
