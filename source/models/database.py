@@ -42,9 +42,8 @@ class Database:
 
 
     def set(self, table_name, row):
-        # table = Table(table_name)
-        # table.set(row)
-        pass
+        table = Table(self, table_name = table_name)
+        table.set(row)
     
     def get(self, table_name, query):
         table = self.get_table_obj(table_name)
@@ -58,7 +57,8 @@ class Database:
     
     def get_name(self):
         return self.__database_name
-
+ 
     def __database_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise DatabaseNotExist(message = "the database name you entered is not valid or database is not exist")
+ 

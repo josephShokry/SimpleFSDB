@@ -1,7 +1,11 @@
+from dataclasses import dataclass
 import json, os
+import uuid
 from commands_functions.schema_keys import Keys
+from models.row import Row
 from models.table_metadata import TableMetaData
 from outputs.exceptions import *
+from models.index import Index
 
 
 class Table:
@@ -35,12 +39,29 @@ class Table:
     def get_name(self):
         return self.__table_name
 
+ 
     def __table_name_validate(self):
             if not os.path.isdir(self.get_path()):
                 raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
     
-    def set(self):
-        pass
+    def set(self, row):
+        self.__colomns_name_validate(row = row)
+        if self.table_metadata.primary_key not in row : 
+            row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
+        row_obj = Row(table = self, value = row)
+        # row_json_data = json.dumps(row, indent = 2)
+
+        if self.table_metadata.enable_overwrite == "false" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
+            raise WrongInput(message = "this file is already exsist")
+        elif self.table_metadata.enable_overwrite == "true" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
+            self.delete() ##delete the file and indecis
+            self.write()  ##write the file
+        else:  
+            # with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
+            #     row_file.write(row_json_data)
+            # self.update_indx(row)
+            row_obj.serialize()
+ 
     
     def get(self, query):
 
@@ -50,5 +71,19 @@ class Table:
     
     def delete(self):
         pass
-  
+
+    def update_indx(self, row):
+        primary_key = row[self.table_metadata.primary_key]
+        for index_name in self.table_metadata.index_keys:
+            index = Index(self, index_name = index_name, index_value = row[index_name])
+            index.add_primary_key(primary_key = primary_key)
     
+
+    def __colomns_name_validate(self, row):
+        for row_colomn_name in row:
+            if row_colomn_name not in self.table_metadata.columns:
+                raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.__table_name + " table")
+    
+    def get_primary_keys(self):
+        return os.listdir(self.get_path())
+ 
