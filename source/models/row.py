@@ -62,7 +62,8 @@ class Row:
             with open(lock_file_path, "x"):
                 pass
         except:
-            raise FileNotFound(message = "the primary key is locked now try again later")
+            while os.path.isfile(lock_file_path):
+                pass
 
     def __unlock(self):
         lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock",self.primary_key + ".json"))
