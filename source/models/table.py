@@ -25,7 +25,6 @@ class Table:
             return table_schema
 
     def serialize(self):
-
         os.makedirs(self.get_path(),exist_ok = True)
         self.table_metadata.serialize_table_shcema()
 
