@@ -1,4 +1,5 @@
 import os, json, uuid
+import time
 from outputs.exceptions import *
 from models.index import Index
 
@@ -63,7 +64,7 @@ class Row:
                 pass
         except:
             while os.path.isfile(lock_file_path):
-                pass
+                time.sleep(1)
 
     def __unlock(self):
         lock_file_path = os.path.join(self.table.get_path(), os.path.join("Lock",self.primary_key + ".json"))
