@@ -5,7 +5,7 @@ from outputs.exceptions import *
 
 
 class Table:
-    def __init__(self, database , table_name = None, table_schema = None):
+    def __init__(self, database , table_name = None, table_schema = None):  
         self.database = database
         if table_schema is not None:
             self.__init_by_schema(table_schema = table_schema)
@@ -20,12 +20,12 @@ class Table:
 
     def __init_by_name(self, table_name):
         self.__table_name = table_name
+        self.__table_name_validate()
         with open(os.path.join(self.get_path(), "schema.json"),"r")as table_schema_file:
             table_schema = json.load(table_schema_file)
-            return table_schema
+        return table_schema
 
     def serialize(self):
-
         os.makedirs(self.get_path(),exist_ok = True)
         self.table_metadata.serialize_table_shcema()
 
@@ -35,11 +35,20 @@ class Table:
     def get_name(self):
         return self.__table_name
 
+    def __table_name_validate(self):
+            if not os.path.isdir(self.get_path()):
+                raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
+    
     def set(self):
         pass
     
-    def get(self):
+    def get(self, query):
+
+
+        
         pass
     
     def delete(self):
         pass
+  
+    

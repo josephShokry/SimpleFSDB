@@ -14,7 +14,7 @@ class CommandFactory:
         elif command_type == "delete":
             return DeleteCommand()
         elif command_type == "get":
-            return GetCommand()
+            return GetCommand(args.data_base, args.table, args.query)
         elif command_type == "set":
             return SetCommand(args.data_base, args.table, args.value, args.value_path)
         else :

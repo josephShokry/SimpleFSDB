@@ -11,6 +11,8 @@ def  parseInput():
     parser.add_argument("-table", "--table", type = str, help = "the table name that you want to access")
     parser.add_argument("-dow", "--disableoverwrite", type = str.lower, default = "true",
      help = "when it is true it will over write in the stored row, if it isn't it will raise exception if the row is already exist")
+    parser.add_argument("-q", "--query", type = str, help = "the query that you want to get")
+
     return parser.parse_args()
 
     
