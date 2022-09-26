@@ -18,4 +18,7 @@ jobs:
       - name : run test cases of create function
         run : python tests\test_cases_create.py
 
+      - name : run test cases of set function
+        run : python tests\test_cases_set.py
+
 
