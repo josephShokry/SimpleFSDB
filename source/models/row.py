@@ -2,6 +2,7 @@ import os, json, uuid
 from commands_functions.schema_keys import Keys
 from outputs.exceptions import *
 from models.index import Index
+
 class Row:
     def __init__(self, table, value = None, primary_key = None):
         self.table = table
@@ -14,7 +15,7 @@ class Row:
         
     def __init_by_value(self, value):
         self.value = value
-        self.primary_key = value[Keys.PRIMARY_KEY]
+        self.primary_key = value[self.table.table_metadata.primary_key]
 
     def __init_by_primary_key(self,primary_key):
         self.primary_key = primary_key
@@ -42,8 +43,8 @@ class Row:
 
     def update_index(self):
         for index_name in self.table.table_metadata.index_keys:
-            index = Index(self, index_name = index_name, index_value = self.value[index_name])
-            index.update_primary_key(primary_key = self.primary_key)
+            index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
+            index.update_primary_key(primary_key = self.primary_key) ##update
     
     def __get_by_primary_key(self):
         if not self.row_exists():
@@ -57,6 +58,3 @@ class Row:
             for index_name in self.table.table_metadata.index_keys:
                 index = Index(self, index_name = index_name, index_value = self.value[index_name])
                 index.delete_primary_key(primary_key = self.primary_key, index_value = self.value[index_name])
-        
-
-
