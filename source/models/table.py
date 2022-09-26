@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import json, os
 import uuid
 from commands_functions.schema_keys import Keys
+from models.row import Row
 from models.table_metadata import TableMetaData
 from outputs.exceptions import *
 from models.index import Index
@@ -42,16 +43,19 @@ class Table:
         self.__colomns_name_validate(row = row)
         if self.table_metadata.primary_key not in row : 
             row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
-        row_json_data = json.dumps(row, indent = 2)
+        row_obj = Row(table = self, value = row)
+        # row_json_data = json.dumps(row, indent = 2)
+
         if self.table_metadata.enable_overwrite == "false" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
             raise WrongInput(message = "this file is already exsist")
         elif self.table_metadata.enable_overwrite == "true" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
             self.delete() ##delete the file and indecis
             self.write()  ##write the file
         else:  
-            with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
-                row_file.write(row_json_data)
-            self.update_indx(row)
+            # with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
+            #     row_file.write(row_json_data)
+            # self.update_indx(row)
+            row_obj.serialize()
 
     
     def get(self):

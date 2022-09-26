@@ -1,3 +1,3 @@
-'''
+python source\main.py -cmd create -sch tests\testcases_schemas\schema.txt
+
 python source\main.py -cmd set -database csed2025 -table Students -val "{\"id\": \"30\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"
-'''

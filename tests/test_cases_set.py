@@ -7,14 +7,16 @@ from outputs.exceptions import *
 from outputs.output import *
 
 class test_set_function(unittest.TestCase):
-    def test_set_1(self): # raw is already exist
-        print('test # 1')
-        try:
-           result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
-           output_object = outputs(result)
-        except RowExists as e:
-           output_object = outputs(exception = e, result = None)
-        print(json.dumps(output_object.__dict__, indent = 2))
+   
+   #  def test_set_1(self): # raw is already exist
+   #       print('test # 1')
+   #       try:
+   #          result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()
+   #          result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+   #          output_object = outputs(result)
+   #       except RowExists as e:
+   #          output_object = outputs(exception = e, result = None)
+   #       print(json.dumps(output_object.__dict__, indent = 2))
 
     def test_set_2(self):# not giving the database name
         print('test # 2')
@@ -64,14 +66,14 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__, indent = 2))
 
-    # def test_set_7(self):# the givin value does not have id coloumn
-    #     print('test # 7')
-    #     try:
-    #        result = SetCommand("csed2025", "Students","{\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
-    #        output_object = outputs(result)
-    #     except WrongInput as e:
-    #        output_object = outputs(exception = e, result = None)
-    #     print(json.dumps(output_object.__dict__, indent = 2))
+   #  def test_set_7(self):# the givin value does not have id coloumn
+   #      print('test # 7')
+   #      try:
+   #         result = SetCommand("csed2025", "Students","{\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+   #         output_object = outputs(result)
+   #      except WrongInput as e:
+   #         output_object = outputs(exception = e, result = None)
+   #      print(json.dumps(output_object.__dict__, indent = 2))
 
 
     def test_set_8(self):# miss match of the coloumns of the value with the table schema
