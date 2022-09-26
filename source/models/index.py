@@ -12,7 +12,7 @@ class Index:
 
     def get_path(self, index_value = None):
         if index_value == None:
-            return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_name))
+            return os.path.join(self.table.get_path(), os.path.join("Indices" , self.index_name))
         else:
             return os.path.join(self.get_path(), self.index_value + ".txt")
 

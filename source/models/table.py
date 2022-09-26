@@ -41,8 +41,8 @@ class Table:
 
     def set(self, row):
         self.__colomns_name_validate(row = row)
-        if self.table_metadata.primary_key not in row : 
-            row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
+        # if self.table_metadata.primary_key not in row : 
+        #     row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
         row_obj = Row(table = self, value = row)
         # row_json_data = json.dumps(row, indent = 2)
 
