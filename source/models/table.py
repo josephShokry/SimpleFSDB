@@ -58,7 +58,7 @@ class Table:
         primarykeys = []
         for index_name in query:
             if index_name in self.table_metadata.index_keys:
-                primarykeys = Index(self, index_name = index_name, index_value = query[index_name]).get_primary_key(index_value = query[index_name])
+                primarykeys = self.table_metadata.indicies[index_name].get_primary_key(index_value = query[index_name]) 
                 break
         return primarykeys
  

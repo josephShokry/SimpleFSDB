@@ -53,6 +53,24 @@ class test_set_function(unittest.TestCase):
         except TableNotExist as e:
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
+
+    def test_get_6(self):# enter a column doesn't exist in the table 
+        print('test # 6')
+        try:
+           result = GetCommand("csed2025","Students", "{\"iiiid\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
+           output_object = outputs(result= result)
+        except ColumnsNotExistInSchema as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__,indent=2))
+
+    def test_get_7(self):# not valid json query 
+        print('test # 7')
+        try:
+           result = GetCommand("csed2025","Students", "{\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
+           output_object = outputs(result= result)
+        except WrongInput as e:
+           output_object = outputs(exception = e, result = None)
+        print(json.dumps(output_object.__dict__,indent=2))
     
  
    
