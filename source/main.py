@@ -10,7 +10,7 @@ if __name__=='__main__':
         args = parsing.parseInput()
         command = CommandFactory.create_commands(args)
         result = command.execute()
-        output_object = outputs(result)
+        output_object = outputs(result = result)
     except Exception as e:
        output_object = outputs(exception = e, result = None)
     print(json.dumps(output_object.__dict__, indent = 2))

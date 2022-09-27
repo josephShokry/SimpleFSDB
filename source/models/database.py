@@ -1,4 +1,4 @@
-import os, json
+import os
 
 from commands_functions.schema_keys import Keys
 from models.table import Table
@@ -12,7 +12,7 @@ class Database:
         elif database_name is not None:
             self.__init_by_name(database_name = database_name)
         else :
-            raise WrongInput(message = "the database name and schema data are null")
+            raise WrongInput(message = "the database name or schema data are null")
             
     def __init_by_schema(self, schema_data):
         self.__database_name = schema_data[Keys.DATABASE_NAME]
