@@ -44,6 +44,7 @@ class Row:
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
+
         row_file_path = os.path.join(table.get_path(), os.path.join("Data", primary_key + ".json"))
         if not os.path.isfile(row_file_path) :
             return None
@@ -58,6 +59,7 @@ class Row:
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
             index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
+
             index.delete_primary_key(primary_key = self.primary_key, index_value = self.value[index_name])
         self.__unlock()
 
