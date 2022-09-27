@@ -7,7 +7,7 @@
             "primary_key"  : "id", 
             "Index_keys" : ["first_name", "gender"],
             "consistently" : "Strong",
-            "enable_overwrite" : "false"
+            "enable_overwrite" : "true"
         }, 
         {
             "name" : "reservation", 

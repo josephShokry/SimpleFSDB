@@ -13,6 +13,9 @@ class TableMetaData():
         self.index_keys = table_shcema[Keys.INDEX_KEY]
         self.consistently = table_shcema[Keys.CONSISTENTLY]
         self.enable_overwrite = table_shcema[Keys.ENABLE_OVERWRITE]
+        self.indcies = {}
+        for index_name in self.index_keys:
+            self.indcies[index_name] = Index(self.table, index_name)
 
     def get_path(self):
         return self.table.get_path()
@@ -27,7 +30,7 @@ class TableMetaData():
     def serialize_indecies(self):
         os.makedirs(os.path.join(self.get_path(),"Indices"), exist_ok = True)
         for index_name in self.index_keys: 
-            index = Index(table = self.table, index_name = index_name)
+            index = self.table.table_metadata.indcies[index_name]
             index.serialize()
 
     def serialize_folders(self):

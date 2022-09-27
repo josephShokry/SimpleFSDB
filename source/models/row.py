@@ -39,8 +39,8 @@ class Row:
 
     def update_index(self):
         for index_name in self.table.table_metadata.index_keys:
-            index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
-            index.update_primary_key(primary_key = self.primary_key) 
+            index = self.table.table_metadata.indcies[index_name]
+            index.update_primary_key(primary_key = self.primary_key, index_value = self.value[index_name]) 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
@@ -57,7 +57,7 @@ class Row:
             return
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
-            index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
+            index = self.table.table_metadata.indcies[index_name]
             index.delete_primary_key(primary_key = self.primary_key, index_value = self.value[index_name])
         self.__unlock()
 
