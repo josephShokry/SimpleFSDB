@@ -38,12 +38,11 @@ class Table:
         return self.__table_name
 
     def set(self, row):
-        self.__colomns_name_validate(row = row)
         row_obj = Row(table = self, value = row)
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
-            old_row = Row(table = self).load_by_primary_key(table=self, primary_key = row_obj.primary_key)
+            old_row = Row(table = self).load_by_primary_key(table = self, primary_key = row_obj.primary_key)
             old_row.delete()
         row_obj.serialize()
 
@@ -57,12 +56,6 @@ class Table:
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise TableNotExist(message = "the database name you entered is not valid or database is not exist")
-
-    #to check that all the givin colomns in the value are in the table schema
-    def __colomns_name_validate(self, row):
-        for row_colomn_name in row:
-            if row_colomn_name not in self.table_metadata.columns:
-                raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.__table_name + " table")
     
     def get_primary_keys(self):
         return os.listdir(self.get_path())
