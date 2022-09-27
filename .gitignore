@@ -1,4 +1,3 @@
 *.pyc
 *.xml
 *.iml
-source/models/row.py

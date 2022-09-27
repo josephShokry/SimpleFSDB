@@ -1,8 +1,7 @@
-import os, json
+import json
 from commands_functions.abstract_command import AbtractCommand
 from outputs.exceptions import *
 from models.table import *
-from models.index import Index;
 from models.database import Database
 
 class SetCommand(AbtractCommand):

@@ -25,7 +25,6 @@ class test_set_function(unittest.TestCase):
          output_object = outputs(exception = e, result = None)
       print(json.dumps(output_object.__dict__, indent = 2))
 
-
    def test_set_3(self):# not giving the table name
       print('test # 3')
       try:
@@ -35,7 +34,6 @@ class test_set_function(unittest.TestCase):
          output_object = outputs(exception = e, result = None)
       print(json.dumps(output_object.__dict__, indent = 2))
 
-
    def test_set_4(self):# not giving the value
       print('test # 4')
       try:
@@ -44,7 +42,6 @@ class test_set_function(unittest.TestCase):
       except WrongInput as e:
          output_object = outputs(exception = e, result = None)
       print(json.dumps(output_object.__dict__, indent = 2))
-
 
    def test_set_5(self):# giving wrong db name or db not exist
       print('test # 5')
@@ -69,7 +66,6 @@ class test_set_function(unittest.TestCase):
       result = SetCommand("csed2025", "Students","{\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
       output_object = outputs(result)
       print(json.dumps(output_object.__dict__, indent = 2))
-
 
    def test_set_8(self):# miss match of the coloumns of the value with the table schema
       print('test # 8')
