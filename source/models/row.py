@@ -1,15 +1,22 @@
 import os, json, uuid
-import time
 from outputs.exceptions import *
 from models.index import Index
 
 class Row:
-    def __init__(self, table, value = None):
+    def __init__(self, table, value = {}):
         self.table = table
         self.value = value
-        if self.table.table_metadata.primary_key not in value : 
-            value[self.table.table_metadata.primary_key] = str(uuid.uuid4().node)
-        self.primary_key = value[self.table.table_metadata.primary_key]
+        self.primary_key = self.__get_primary_key()
+        # print("#################3")
+        # print(value)
+        # print("#################3")
+
+    def __get_primary_key(self):
+        if self.table.table_metadata.primary_key not in self.value : 
+            self.value[self.table.table_metadata.primary_key] = str(uuid.uuid4().node)
+        else:
+            self.primary_key = self.value[self.table.table_metadata.primary_key]
+        return self.value[self.table.table_metadata.primary_key]
 
     def serialize(self):
         self.__lock()
@@ -40,12 +47,15 @@ class Row:
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
-        row_file_path = os.path.join(table.get_path(), primary_key + ".json")
+        row_file_path = os.path.join(table.get_path(), os.path.join("Data", primary_key + ".json"))
         if not os.path.isfile(row_file_path) :
             return None
         with open(row_file_path, 'r') as row_file:
             value = json.load(row_file)
-        return Row(value = value)
+        print("#######################")
+        print(value)
+        print("#######################")
+        return Row(table = table, value = value)
 
     def delete(self):
         self.__lock()
@@ -53,6 +63,7 @@ class Row:
             return
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
+            print(index_name + "        "+ self.value[index_name])
             index = Index(self, index_name = index_name, index_value = self.value[index_name])
             index.delete_primary_key(primary_key = self.primary_key, index_value = self.value[index_name])
         self.__unlock()
