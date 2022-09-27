@@ -30,7 +30,7 @@ class test_set_function(unittest.TestCase):
       try:
          result = SetCommand("csed2025",None,"{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
          output_object = outputs(result)
-      except WrongInput as e:
+      except TableNotExist as e:
          output_object = outputs(exception = e, result = None)
       print(json.dumps(output_object.__dict__, indent = 2))
 

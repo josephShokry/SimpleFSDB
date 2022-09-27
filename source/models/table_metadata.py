@@ -24,7 +24,7 @@ class TableMetaData():
         table_schemafile_path =  os.path.join(self.get_path(), "schema.json") 
         with open(table_schemafile_path, 'w') as table_schema_file:
             json.dump(self.table_schema, table_schema_file,indent=2)
-        self.serialize_folders()
+        self.__create_folders()
         self.serialize_indecies()
 
     def serialize_indecies(self):
@@ -33,6 +33,6 @@ class TableMetaData():
             index = self.table.table_metadata.indcies[index_name]
             index.serialize()
 
-    def serialize_folders(self):
+    def __create_folders(self):
         os.makedirs(os.path.join(self.get_path(),"Data"), exist_ok = True)
         os.makedirs(os.path.join(self.get_path(),"Lock"), exist_ok = True)

@@ -36,7 +36,8 @@ class Database:
             table.serialize()
 
     def set(self, table_name, row):
-        table = Table(self, table_name = table_name)
+        self.__table_name_validate(table_name = table_name)
+        table = self.tables[table_name]
         table.set(row)
     
     def get(self, table, quiry):
@@ -54,3 +55,7 @@ class Database:
     def __database_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise DatabaseNotExist(message = "the database name you entered is not valid or database is not exist")
+    
+    def __table_name_validate(self, table_name):
+        if table_name == None or table_name not in self.tables:
+            raise TableNotExist(message = "the table is not exists")
