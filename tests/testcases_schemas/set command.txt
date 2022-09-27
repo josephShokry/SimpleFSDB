@@ -1,3 +1,14 @@
 python source\main.py -cmd create -sch tests\testcases_schemas\schema.txt
 
 python source\main.py -cmd set -database csed2025 -table Students -val "{\"id\": \"30\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"
+
+
+
+
+cd Desktop
+cd check_in_system
+cd DB
+cd SimpleFSDB
+python source\main.py -cmd set -database csed2025 -table Students -val "{\"id\": \"30\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}"
+
+C:\Users\lenovo\Desktop\check_in_system\DB\SimpleFSDB\csed2025\Students\Indices\gender\female.txt

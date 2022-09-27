@@ -1,3 +1,4 @@
+from genericpath import isfile
 import os
 from outputs.exceptions import *
 
@@ -12,7 +13,7 @@ class Index:
 
     def get_path(self, index_value = None):
         if index_value == None:
-            return os.path.join(self.table.get_path(), os.path.join("indices" , self.index_name))
+            return os.path.join(self.table.get_path(), os.path.join("Indices" , self.index_name))
         else:
             return os.path.join(self.get_path(), self.index_value + ".txt")
 
@@ -25,6 +26,8 @@ class Index:
         old_primary_keys = self.get_primary_key(index_value)
         if primary_key in old_primary_keys : old_primary_keys.remove(primary_key) 
         if len(old_primary_keys)>0: self.__write_in_file(data = old_primary_keys)
+        elif os.path.isfile(self.get_path(self.index_value)) :
+            os.remove(self.get_path(self.index_value))
 
     def get_primary_key(self, index_value):
         if not os.path.isfile(self.get_path(index_value)):

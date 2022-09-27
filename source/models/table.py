@@ -1,11 +1,9 @@
 from dataclasses import dataclass
 import json, os
-import uuid
 from commands_functions.schema_keys import Keys
 from models.row import Row
 from models.table_metadata import TableMetaData
 from outputs.exceptions import *
-from models.index import Index
 
 
 class Table:
@@ -46,21 +44,14 @@ class Table:
     
     def set(self, row):
         self.__colomns_name_validate(row = row)
-        if self.table_metadata.primary_key not in row : 
-            row[self.table_metadata.primary_key] = str(uuid.uuid4().node)
         row_obj = Row(table = self, value = row)
-        # row_json_data = json.dumps(row, indent = 2)
+        if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
+            raise RowExists(message = "this row is already exists and can't overwrite")
+        elif row_obj.row_exists():
+            old_row = Row(table = self).load_by_primary_key(table=self, primary_key = row_obj.primary_key)
+            old_row.delete()
+        row_obj.serialize()
 
-        if self.table_metadata.enable_overwrite == "false" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
-            raise WrongInput(message = "this file is already exsist")
-        elif self.table_metadata.enable_overwrite == "true" and row[self.table_metadata.primary_key]+".json" in self.get_primary_keys():
-            self.delete() ##delete the file and indecis
-            self.write()  ##write the file
-        else:  
-            # with open(os.path.join(self.get_path(), str(row[self.table_metadata.primary_key]) + ".json"), 'x') as row_file: 
-            #     row_file.write(row_json_data)
-            # self.update_indx(row)
-            row_obj.serialize()
  
     
     def get(self, query):
@@ -71,14 +62,9 @@ class Table:
     
     def delete(self):
         pass
-
-    def update_indx(self, row):
-        primary_key = row[self.table_metadata.primary_key]
-        for index_name in self.table_metadata.index_keys:
-            index = Index(self, index_name = index_name, index_value = row[index_name])
-            index.add_primary_key(primary_key = primary_key)
     
 
+    #to check that all the givin colomns in the value are in the table schema
     def __colomns_name_validate(self, row):
         for row_colomn_name in row:
             if row_colomn_name not in self.table_metadata.columns:
