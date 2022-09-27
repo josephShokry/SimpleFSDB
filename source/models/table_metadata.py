@@ -21,7 +21,7 @@ class TableMetaData():
         return self.table.get_path()
 
     def serialize_table_shcema(self):
-        table_schemafile_path =  os.path.join(self.get_path(), "schema.json" ) 
+        table_schemafile_path =  os.path.join(self.get_path(), "schema.json") 
         with open(table_schemafile_path, 'w') as table_schema_file:
             json.dump(self.table_schema, table_schema_file,indent=2)
         self.serialize_folders()
