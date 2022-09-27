@@ -7,9 +7,6 @@ class Row:
         self.table = table
         self.value = value
         self.primary_key = self.__get_primary_key()
-        # print("#################3")
-        # print(value)
-        # print("#################3")
 
     def __get_primary_key(self):
         if self.table.table_metadata.primary_key not in self.value : 
@@ -52,9 +49,6 @@ class Row:
             return None
         with open(row_file_path, 'r') as row_file:
             value = json.load(row_file)
-        print("#######################")
-        print(value)
-        print("#######################")
         return Row(table = table, value = value)
 
     def delete(self):
@@ -63,8 +57,7 @@ class Row:
             return
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
-            print(index_name + "        "+ self.value[index_name])
-            index = Index(self, index_name = index_name, index_value = self.value[index_name])
+            index = Index(self.table, index_name = index_name, index_value = self.value[index_name])
             index.delete_primary_key(primary_key = self.primary_key, index_value = self.value[index_name])
         self.__unlock()
 

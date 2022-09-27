@@ -40,16 +40,10 @@ class Table:
     def set(self, row):
         self.__colomns_name_validate(row = row)
         row_obj = Row(table = self, value = row)
-        print("###########new data########################")
-        print(row_obj.value)
-        print("##############################################")
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
             old_row = Row(table = self).load_by_primary_key(table=self, primary_key = row_obj.primary_key)
-            print("###########old data########################")
-            print(old_row.value)
-            print("##############################################")
             old_row.delete()
         row_obj.serialize()
 
@@ -59,12 +53,6 @@ class Table:
     
     def delete(self):
         pass
-
-    # def update_indx(self, row):
-    #     primary_key = row[self.table_metadata.primary_key]
-    #     for index_name in self.table_metadata.index_keys:
-    #         index = Index(self, index_name = index_name, index_value = row[index_name])
-    #         index.add_primary_key(primary_key = primary_key)
     
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
