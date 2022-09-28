@@ -86,6 +86,7 @@ class test_set_function(unittest.TestCase):
          output_object = outputs(exception = e, result = None)
       print(json.dumps(output_object.__dict__, indent = 2))
 
+   ## will be uncommented after the implementaion of the get
    # def test_set_12(self): # set a row with same pk and overwrite is true
    #    print('test # 12')
    #    result = SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"female\"}").execute()  

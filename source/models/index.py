@@ -32,9 +32,9 @@ class Index:
             primary_keys = index_file.read().split(",")
         return primary_keys
     
-    def update_primary_key(self, primary_key, index_value):
-        self.delete_primary_key(primary_key = primary_key, index_value = index_value)
-        self.add_primary_key(primary_key = primary_key, index_value = index_value)
+    # def update_primary_key(self, primary_key, index_value):
+    #     self.delete_primary_key(primary_key = primary_key, index_value = index_value)
+    #     self.add_primary_key(primary_key = primary_key, index_value = index_value)
 
     def __update_in_file(self, data, index_value):
         if len(data) == 0 and os.path.isfile(self.get_path(index_value)) :

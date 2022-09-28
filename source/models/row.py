@@ -18,7 +18,9 @@ class Row:
         row_json_data = json.dumps(self.__value, indent = 2)
         with open(self.get_path(), 'w') as row_file: 
             row_file.write(row_json_data)
-        self.update_index()
+        for index_name in self.table.table_metadata.index_keys:
+            index = self.table.table_metadata.indcies[index_name]
+            index.add_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
         self.__unlock()
 
     def row_exists(self):
@@ -32,10 +34,10 @@ class Row:
             if row_colomn_name not in self.table.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.table.get_name() + " table")
 
-    def update_index(self):
-        for index_name in self.table.table_metadata.index_keys:
-            index = self.table.table_metadata.indcies[index_name]
-            index.update_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name]) 
+    # def update_index(self):
+    #     for index_name in self.table.table_metadata.index_keys:
+    #         index = self.table.table_metadata.indcies[index_name]
+    #         index.update_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name]) 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
