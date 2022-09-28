@@ -5,17 +5,17 @@ from models.index import Index
 class Row:
     def __init__(self, table, value = {}):
         self.table = table
-        self.value = value
-        if self.table.table_metadata.primary_key not in self.value : 
-            self.value[self.table.table_metadata.primary_key] = str(uuid.uuid4().node)
+        self.__value = value
+        if self.table.table_metadata.primary_key not in self.__value : 
+            self.__value[self.table.table_metadata.primary_key] = str(uuid.uuid4().node)
     
     def get_primary_key(self):
-        return self.value[self.table.table_metadata.primary_key]
+        return self.__value[self.table.table_metadata.primary_key]
 
     def serialize(self):
         self.__lock()
         self.__colomns_name_validate()
-        row_json_data = json.dumps(self.value, indent = 2)
+        row_json_data = json.dumps(self.__value, indent = 2)
         with open(self.get_path(), 'w') as row_file: 
             row_file.write(row_json_data)
         self.update_index()
@@ -28,14 +28,14 @@ class Row:
         return os.path.join(self.table.get_path(), os.path.join("Data", self.get_primary_key() + ".json"))
 
     def __colomns_name_validate(self):
-        for row_colomn_name in self.value:
+        for row_colomn_name in self.__value:
             if row_colomn_name not in self.table.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.table.get_name() + " table")
 
     def update_index(self):
         for index_name in self.table.table_metadata.index_keys:
             index = self.table.table_metadata.indcies[index_name]
-            index.update_primary_key(primary_key = self.get_primary_key(), index_value = self.value[index_name]) 
+            index.update_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name]) 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
@@ -53,7 +53,7 @@ class Row:
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
             index = self.table.table_metadata.indcies[index_name]
-            index.delete_primary_key(primary_key = self.get_primary_key(), index_value = self.value[index_name])
+            index.delete_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
         self.__unlock()
 
     def __lock(self):
