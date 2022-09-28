@@ -20,6 +20,8 @@ class Database:
             self.tables[table_schema[Keys.NAME]] = Table(self, table_schema = table_schema)
 
     def __init_by_name(self, database_name):
+        self.__database_name = database_name
+        self.__database_name_validate()
         for table_name in os.listdir(self.get_path()):
             self.tables[table_name] = Table(self, table_name = table_name)
         
@@ -34,9 +36,9 @@ class Database:
             table.serialize()
 
     def set(self, table_name, row):
-        # table = Table(table_name)
-        # table.set(row)
-        pass
+        self.__table_name_validate(table_name = table_name)
+        table = self.tables[table_name]
+        table.set(row)
     
     def get(self, table, quiry):
         pass
@@ -49,3 +51,11 @@ class Database:
     
     def get_name(self):
         return self.__database_name
+    
+    def __database_name_validate(self):
+        if not os.path.isdir(self.get_path()):
+            raise DatabaseNotExist(message = "the database name you entered is not valid or database is not exist")
+    
+    def __table_name_validate(self, table_name):
+        if table_name == None or table_name not in self.tables:
+            raise TableNotExist(message = "the table is not exists")
