@@ -10,7 +10,7 @@ from outputs.output import *
 class test_set_function(unittest.TestCase):
    
     
-    def test_get_1(self):# no error get the value
+   def test_get_1(self):# no error get the value
         print('test # 1')
         value = [{"id": "5","first_name": "joseph","last_name": "shokry","age": "20","gender": "male"}] 
         result = GetCommand("csed2025", "Students", "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -18,7 +18,7 @@ class test_set_function(unittest.TestCase):
         self.assertListEqual(value,result)     
         print(json.dumps(output_object.__dict__,indent=2))
 
-    def test_get_2(self):# not enter the table 
+   def test_get_2(self):# not enter the table 
         print('test # 2')
         try:
            result = GetCommand("csed2025",None, "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -27,7 +27,7 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
     
-    def test_get_3(self):# not enter the database
+   def test_get_3(self):# not enter the database
         print('test # 3')
         try:
            result = GetCommand(None,"Students", "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -36,7 +36,7 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
 
-    def test_get_4(self):# Wrong database name
+   def test_get_4(self):# Wrong database name
         print('test # 4')
         try:
            result = GetCommand("cssssssed2025","Students", "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -45,7 +45,7 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
 
-    def test_get_5(self):# Wrong table name 
+   def test_get_5(self):# Wrong table name 
         print('test # 5')
         try:
            result = GetCommand("csed2025","Studddddents", "{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -54,7 +54,7 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
 
-    def test_get_6(self):# enter a column doesn't exist in the table 
+   def test_get_6(self):# enter a column doesn't exist in the table 
         print('test # 6')
         try:
            result = GetCommand("csed2025","Students", "{\"iiiid\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -63,7 +63,7 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
 
-    def test_get_7(self):# not valid json query 
+   def test_get_7(self):# not valid json query 
         print('test # 7')
         try:
            result = GetCommand("csed2025","Students", "{\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
@@ -71,6 +71,14 @@ class test_set_function(unittest.TestCase):
         except WrongInput as e:
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
+
+
+   def test_get_8(self):# the query has the primary key but wrong in other data
+      print('test # 8')
+      result = GetCommand("csed2025","Students", "{\"id\": \"5\",\"first_name\": \"joooooseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
+      output_object = outputs(result= result)
+      self.assertListEqual([],result)            
+      print(json.dumps(output_object.__dict__,indent=2))
     
  
    

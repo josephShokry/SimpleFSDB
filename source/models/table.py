@@ -40,8 +40,8 @@ class Table:
 
  
     def __table_name_validate(self):
-            if not os.path.isdir(self.get_path()):
-                raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
+        if not os.path.isdir(self.get_path()):
+            raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
     
     def set(self, row):
         self.__colomns_name_validate(row = row)
@@ -66,8 +66,8 @@ class Table:
     def get(self, query):
         self.__colomns_name_validate(query)
         primarykeys = []
-        if Keys.PRIMARY_KEY in query : # if primarykey in the query
-            primarykeys.append(query[Keys.PRIMARY_KEY])     
+        if self.table_metadata.primary_key in query : # if primarykey in the query
+            primarykeys.append(query[self.table_metadata.primary_key])     
         else:
             primarykeys = self.get_similar_primarykeys(query = query)
             if not len(primarykeys):# compare all data in the table with the query
@@ -86,18 +86,10 @@ class Table:
     def filter_by_query(self, row_objects, query):
         filtered_objects = []
         for row_object in row_objects:
-            if Table.compare(query = query, row_object = row_object):
-                filtered_objects.append(row_object.value)
+            if row_object.has_attributes(query = query):
+                filtered_objects.append(row_object.get_value())
         return filtered_objects
 
-
-    @staticmethod
-    def compare(query, row_object):
-        row_value = row_object.value
-        for key in query:
-            if query[key] != row_value[key]:
-                return False
-        return True
 
     def delete(self):
         pass
