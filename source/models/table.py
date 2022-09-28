@@ -42,7 +42,7 @@ class Table:
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
-            old_row = Row(table = self).load_by_primary_key(table = self, primary_key = row_obj.primary_key)
+            old_row = Row.load_by_primary_key(table = self, primary_key = row_obj.get_primary_key())
             old_row.delete()
         row_obj.serialize()
 
