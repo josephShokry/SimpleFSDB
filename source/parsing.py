@@ -12,5 +12,3 @@ def  parseInput():
     parser.add_argument("-dow", "--disableoverwrite", type = str.lower, default = "true",
      help = "when it is true it will over write in the stored row, if it isn't it will raise exception if the row is already exist")
     return parser.parse_args()
-
-    

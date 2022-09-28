@@ -35,6 +35,6 @@ class Index:
     def __update_in_file(self, data, index_value):
         if len(data) == 0 and os.path.isfile(self.get_path(index_value)) :
             os.remove(self.get_path(index_value))
-        elif len(data)>0:
-            with open(self.get_path(index_value), mode ="w") as index_file:
+        elif len(data) > 0:
+            with open(self.get_path(index_value), mode = "w") as index_file:
                 index_file.write(",".join(data))
