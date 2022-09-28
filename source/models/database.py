@@ -1,4 +1,4 @@
-import os, json
+import os
 
 from commands_functions.schema_keys import Keys
 from models.table import Table
@@ -12,7 +12,7 @@ class Database:
         elif database_name is not None:
             self.__init_by_name(database_name = database_name)
         else :
-            raise WrongInput(message = "the database name and schema data are null")
+            raise WrongInput(message = "the database name or schema data are null")
             
     def __init_by_schema(self, schema_data):
         self.__database_name = schema_data[Keys.DATABASE_NAME]
@@ -35,15 +35,22 @@ class Database:
         for table in self.tables.values():
             table.serialize()
 
+    def get_table_obj(self,table_name):
+        if table_name in self.tables.keys():
+            return self.tables[table_name]
+        raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
+
+
     def set(self, table_name, row):
         self.__table_name_validate(table_name = table_name)
         table = self.tables[table_name]
         table.set(row)
     
-    def get(self, table, quiry):
-        pass
+    def get(self, table_name, query):
+        table = self.get_table_obj(table_name)
+        return table.get(query) 
     
-    def delete(self, table, quiry):
+    def delete(self, table_name, query):
         pass
     
     def get_path(self):
@@ -51,7 +58,7 @@ class Database:
     
     def get_name(self):
         return self.__database_name
-    
+   
     def __database_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise DatabaseNotExist(message = "the database name you entered is not valid or database is not exist")

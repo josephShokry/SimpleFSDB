@@ -19,7 +19,8 @@ class Row:
         with open(self.get_path(), 'w') as row_file: 
             row_file.write(row_json_data)
         for index_name in self.table.table_metadata.index_keys:
-            index = self.table.table_metadata.indcies[index_name]
+ 
+            index = self.table.table_metadata.indicies[index_name]
             index.add_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
         self.__unlock()
 
@@ -33,9 +34,11 @@ class Row:
         for row_colomn_name in self.__value:
             if row_colomn_name not in self.table.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.table.get_name() + " table")
+ 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
+
         row_file_path = os.path.join(table.get_path(), os.path.join("Data", primary_key + ".json"))
         if not os.path.isfile(row_file_path) :
             return None
@@ -49,8 +52,9 @@ class Row:
             return
         os.remove(self.get_path())
         for index_name in self.table.table_metadata.index_keys:
-            index = self.table.table_metadata.indcies[index_name]
+            index = self.table.table_metadata.indicies[index_name]
             index.delete_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
+ 
         self.__unlock()
 
     def __lock(self):
@@ -66,3 +70,13 @@ class Row:
 
     def __get_lock_path(self):
         return os.path.join(self.table.get_path(), os.path.join("Lock", self.get_primary_key() + ".json"))
+    
+    def has_attributes(self,query):
+        row_value = self.get_value()
+        for key in query:
+            if query[key] != row_value[key]:
+                return False
+        return True
+
+    def get_value(self):
+        return self.__value
