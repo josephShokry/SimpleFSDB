@@ -33,11 +33,6 @@ class Row:
         for row_colomn_name in self.__value:
             if row_colomn_name not in self.table.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.table.get_name() + " table")
-
-    # def update_index(self):
-    #     for index_name in self.table.table_metadata.index_keys:
-    #         index = self.table.table_metadata.indcies[index_name]
-    #         index.update_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name]) 
     
     @staticmethod
     def load_by_primary_key(table, primary_key):
