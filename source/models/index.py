@@ -24,9 +24,6 @@ class Index:
         old_primary_keys = self.get_primary_key(index_value)
         if primary_key in old_primary_keys : old_primary_keys.remove(primary_key) 
         self.__update_in_file(data = old_primary_keys, index_value = index_value)
-        # if len(old_primary_keys)>0: self.__write_in_file(data = old_primary_keys,index_value = index_value)
-        # elif os.path.isfile(self.get_path(index_value)) :
-        #     os.remove(self.get_path(index_value))
 
     def get_primary_key(self, index_value):
         if not os.path.isfile(self.get_path(index_value)):
@@ -45,9 +42,3 @@ class Index:
         elif len(data)>0:
             with open(self.get_path(index_value), mode ="w") as index_file:
                 index_file.write(",".join(data))
-
-        # if len(data)>0: 
-        #     with open(self.get_path(index_value), mode ="w") as index_file:
-        #         index_file.write(",".join(data))
-        # elif os.path.isfile(self.get_path(index_value)) :
-        #     os.remove(self.get_path(index_value))
