@@ -89,6 +89,13 @@ class test_set_function(unittest.TestCase):
       output_object = outputs(result= result)
       self.assertListEqual([],result)            
       print(json.dumps(output_object.__dict__,indent=2))
+
+   def test_get_10(self):# the query has the primary key but wrong in other data
+      print('test # 10')
+      result = GetCommand("csed2025","Students", "{\"first_name\": \"joooseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
+      output_object = outputs(result= result)
+      self.assertListEqual([],result)            
+      print(json.dumps(output_object.__dict__,indent=2))
        
 if __name__ == '__main__':
    main_path = os.getcwd()
@@ -99,6 +106,7 @@ if __name__ == '__main__':
       cmd = "python source\main.py -cmd create -sch tests\\testcases_schemas\schema.txt"
       os.system(cmd)
    SetCommand("csed2025", "Students","{\"id\": \"5\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
+   SetCommand("csed2025", "Students","{\"first_name\": \"joooseph\",\"last_name\": \"shokry\",\"age\": \"20\"}").execute()   
    SetCommand("csed2025", "Students","{\"id\": \"15\",\"first_name\": \"joseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute()   
    unittest.main(exit=False)
    shutil.rmtree(os.path.join(main_path,schema[Keys.DATABASE_NAME]))

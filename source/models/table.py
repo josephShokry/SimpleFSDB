@@ -42,7 +42,7 @@ class Table:
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
-            old_row = Row(self).load_by_primary_key(table = self, primary_key = row_obj.get_primary_key())
+            old_row = Row.load_by_primary_key(table = self, primary_key = row_obj.get_primary_key())
             old_row.delete()
         row_obj.serialize()
 
@@ -57,23 +57,23 @@ class Table:
         return primarykeys
  
     def get(self, query):
-        Row(self).colomns_name_validate(query)
+        Row.colomns_name_validate(self, query)
         primarykeys = []
         if self.table_metadata.primary_key in query : # if primarykey in the query
             primarykeys.append(query[self.table_metadata.primary_key])     
         else:
             primarykeys = self.get_similar_primarykeys(query = query)
-            if primarykeys is None:# compare all data in the table with the query
+            if primarykeys is None:
                 return []
-            else:
-                primarykeys = Row.get_all_primary_keys(self)
+            elif len(primarykeys) == 0:
+                primarykeys = Row.get_all_primary_keys(self)# compare all data in the table with the query
         row_objects = self.get_rows(primarykeys)
         return Table.filter_by_query(row_objects = row_objects, query = query)
 
     def get_rows(self, primarykeys):
             row_objects = []
             for primarykey in primarykeys:
-               row_objects.append(Row(self).load_by_primary_key(self, primarykey))
+               row_objects.append(Row.load_by_primary_key(self, primarykey))
             return row_objects
             
     @staticmethod
