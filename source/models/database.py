@@ -35,19 +35,18 @@ class Database:
         for table in self.tables.values():
             table.serialize()
 
-    def get_table_obj(self,table_name):
+    def get_table(self,table_name):
         if table_name in self.tables.keys():
             return self.tables[table_name]
         raise TableNotExist(message = "the table name you entered is not valid or table is not exist")
 
 
     def set(self, table_name, row):
-        self.__table_name_validate(table_name = table_name)
-        table = self.tables[table_name]
+        table = self.get_table(table_name)
         table.set(row)
     
     def get(self, table_name, query):
-        table = self.get_table_obj(table_name)
+        table = self.get_table(table_name)
         return table.get(query) 
     
     def delete(self, table_name, query):

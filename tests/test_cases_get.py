@@ -81,6 +81,14 @@ class test_set_function(unittest.TestCase):
       output_object = outputs(result= result)
       self.assertListEqual([],result)            
       print(json.dumps(output_object.__dict__,indent=2))
+
+
+   def test_get_9(self):# the query has index but not in the file
+      print('test # 9')
+      result = GetCommand("csed2025","Students", "{\"first_name\": \"joooooseph\",\"last_name\": \"shokry\",\"age\": \"20\"}").execute() 
+      output_object = outputs(result= result)
+      self.assertListEqual([],result)            
+      print(json.dumps(output_object.__dict__,indent=2))
        
 if __name__ == '__main__':
    main_path = os.getcwd()

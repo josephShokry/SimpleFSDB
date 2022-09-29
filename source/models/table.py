@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import json, os
 from commands_functions.schema_keys import Keys
 from models.index import Index
@@ -38,45 +37,47 @@ class Table:
     def get_name(self):
         return self.__table_name
     
-    def set(self, row):
-        self.__colomns_name_validate(row = row)
-        row_obj = Row(table = self, value = row)
+    def set(self, data):
+        row_obj = Row(table = self, value = data)
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
-            old_row = Row(table = self).load_by_primary_key(table=self, primary_key = row_obj.primary_key)
+            old_row = Row(self).load_by_primary_key(table = self, primary_key = row_obj.get_primary_key())
             old_row.delete()
         row_obj.serialize()
 
- 
     def get_similar_primarykeys(self, query):
         primarykeys = []
         for index_name in query:
             if index_name in self.table_metadata.index_keys:
-                primarykeys = self.table_metadata.indicies[index_name].get_primary_key(index_value = query[index_name]) 
+                primarykeys = self.table_metadata.indicies[index_name].get_primary_key(index_value = query[index_name])
+                if not len(primarykeys):
+                    return None
                 break
         return primarykeys
  
     def get(self, query):
-        self.__colomns_name_validate(query)
+        Row(self).colomns_name_validate(query)
         primarykeys = []
         if self.table_metadata.primary_key in query : # if primarykey in the query
             primarykeys.append(query[self.table_metadata.primary_key])     
- 
         else:
             primarykeys = self.get_similar_primarykeys(query = query)
-            if not len(primarykeys):# compare all data in the table with the query
-                primarykeys = self.get_all_primary_keys()
+            if primarykeys is None:# compare all data in the table with the query
+                return []
+            else:
+                primarykeys = Row.get_all_primary_keys(self)
         row_objects = self.get_rows(primarykeys)
-        return self.filter_by_query(row_objects = row_objects, query = query)
+        return Table.filter_by_query(row_objects = row_objects, query = query)
 
     def get_rows(self, primarykeys):
             row_objects = []
             for primarykey in primarykeys:
                row_objects.append(Row(self).load_by_primary_key(self, primarykey))
             return row_objects
-
-    def filter_by_query(self, row_objects, query):
+            
+    @staticmethod
+    def filter_by_query(row_objects, query):
         filtered_objects = []
         for row_object in row_objects:
             if row_object.has_attributes(query = query):
@@ -90,16 +91,6 @@ class Table:
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise TableNotExist(message = "the database name you entered is not valid or database is not exist")
- 
-    def get_all_primary_keys(self):
-        primarykeys = os.listdir(os.path.join(self.get_path(), "Data"))
-        primarykeys_correct = []
-        for primarykey in primarykeys :
-            primarykeys_correct.append(primarykey.partition('.')[0])
-        return primarykeys_correct
 
-    def __colomns_name_validate(self, row):
-        for row_colomn_name in row:
-            if row_colomn_name not in self.table_metadata.columns:
-                raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.__table_name + " table")
- 
+    def get_Data_path(self):
+        return os.path.join(self.get_path(), "Data")

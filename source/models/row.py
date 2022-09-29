@@ -14,32 +14,29 @@ class Row:
 
     def serialize(self):
         self.__lock()
-        self.__colomns_name_validate()
+        self.colomns_name_validate(self.get_value())
         row_json_data = json.dumps(self.__value, indent = 2)
-        with open(self.get_path(), 'w') as row_file: 
+        with open(self.get_path(self.get_primary_key()), 'w') as row_file: 
             row_file.write(row_json_data)
         for index_name in self.table.table_metadata.index_keys:
- 
             index = self.table.table_metadata.indicies[index_name]
             index.add_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
         self.__unlock()
 
     def row_exists(self):
-        return os.path.isfile(self.get_path())
+        return os.path.isfile(self.get_path(self.get_primary_key()))
 
-    def get_path(self):
-        return os.path.join(self.table.get_path(), os.path.join("Data", self.get_primary_key() + ".json"))
+    def get_path(self, primarykey):
+        return os.path.join(self.table.get_path(), os.path.join("Data", primarykey + ".json"))
 
-    def __colomns_name_validate(self):
-        for row_colomn_name in self.__value:
+     
+    def colomns_name_validate(self, query):
+        for row_colomn_name in query:
             if row_colomn_name not in self.table.table_metadata.columns:
                 raise ColumnsNotExistInSchema(message = row_colomn_name + " is not exist in the schema of " + self.table.get_name() + " table")
- 
     
-    @staticmethod
-    def load_by_primary_key(table, primary_key):
-
-        row_file_path = os.path.join(table.get_path(), os.path.join("Data", primary_key + ".json"))
+    def load_by_primary_key(self, table, primary_key):
+        row_file_path =  self.get_path(primary_key)
         if not os.path.isfile(row_file_path) :
             return None
         with open(row_file_path, 'r') as row_file:
@@ -50,7 +47,7 @@ class Row:
         self.__lock()
         if not self.row_exists():
             return
-        os.remove(self.get_path())
+        os.remove(self.get_path(self.get_primary_key()))
         for index_name in self.table.table_metadata.index_keys:
             index = self.table.table_metadata.indicies[index_name]
             index.delete_primary_key(primary_key = self.get_primary_key(), index_value = self.__value[index_name])
@@ -71,7 +68,7 @@ class Row:
     def __get_lock_path(self):
         return os.path.join(self.table.get_path(), os.path.join("Lock", self.get_primary_key() + ".json"))
     
-    def has_attributes(self,query):
+    def has_attributes(self, query):
         row_value = self.get_value()
         for key in query:
             if query[key] != row_value[key]:
@@ -80,3 +77,10 @@ class Row:
 
     def get_value(self):
         return self.__value
+    
+    def get_all_primary_keys(table):
+        primarykeys = os.listdir(table.get_Data_path())
+        primarykeys_correct = []
+        for primarykey in primarykeys :
+            primarykeys_correct.append(primarykey.partition('.')[0])
+        return primarykeys_correct
