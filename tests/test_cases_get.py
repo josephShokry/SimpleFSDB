@@ -8,8 +8,6 @@ from outputs.exceptions import *
 from outputs.output import *
 
 class test_set_function(unittest.TestCase):
-   
-    
    def test_get_1(self):# no error get the value
         print('test # 1')
         value = [{"id": "5","first_name": "joseph","last_name": "shokry","age": "20","gender": "male"}] 
@@ -18,7 +16,6 @@ class test_set_function(unittest.TestCase):
         self.assertListEqual(value,result)     
         print(json.dumps(output_object.__dict__,indent=2))
 
- 
    def test_get_2(self):# not enter the table 
         print('test # 2')
         try:
@@ -37,7 +34,6 @@ class test_set_function(unittest.TestCase):
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
 
- 
    def test_get_4(self):# Wrong database name
         print('test # 4')
         try:
@@ -64,7 +60,6 @@ class test_set_function(unittest.TestCase):
         except ColumnsNotExistInSchema as e:
            output_object = outputs(exception = e, result = None)
         print(json.dumps(output_object.__dict__,indent=2))
-
  
    def test_get_7(self):# not valid json query 
         print('test # 7')
@@ -82,7 +77,6 @@ class test_set_function(unittest.TestCase):
       self.assertListEqual([],result)            
       print(json.dumps(output_object.__dict__,indent=2))
 
-
    def test_get_9(self):# the query has index but not in the file
       print('test # 9')
       result = GetCommand("csed2025","Students", "{\"first_name\": \"joooooseph\",\"last_name\": \"shokry\",\"age\": \"20\"}").execute() 
@@ -90,7 +84,7 @@ class test_set_function(unittest.TestCase):
       self.assertListEqual([],result)            
       print(json.dumps(output_object.__dict__,indent=2))
 
-   def test_get_10(self):# the query has the primary key but wrong in other data
+   def test_get_10(self):# the query has much information than any value in the database
       print('test # 10')
       result = GetCommand("csed2025","Students", "{\"first_name\": \"joooseph\",\"last_name\": \"shokry\",\"age\": \"20\",\"gender\": \"male\"}").execute() 
       output_object = outputs(result= result)

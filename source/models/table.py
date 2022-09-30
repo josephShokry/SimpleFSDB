@@ -73,7 +73,8 @@ class Table:
     def get_rows(self, primarykeys):
             row_objects = []
             for primarykey in primarykeys:
-               row_objects.append(Row.load_by_primary_key(self, primarykey))
+               row = Row.load_by_primary_key(self, primarykey)
+               if row is not None: row_objects.append(row)
             return row_objects
             
     @staticmethod
@@ -81,12 +82,13 @@ class Table:
         filtered_objects = []
         for row_object in row_objects:
             if row_object.has_attributes(query = query):
-                filtered_objects.append(row_object.get_value())
+                filtered_objects.append(row_object)
         return filtered_objects
 
- 
-    def delete(self):
-        pass
+    def delete(self, query):
+        rows_obj = self.get(query)
+        for row in rows_obj:
+            row.delete()
     
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
