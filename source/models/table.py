@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import json, os
 from commands_functions.schema_keys import Keys
+from models.index import Index
 from models.row import Row
 from models.table_metadata import TableMetaData
 from outputs.exceptions import *
@@ -36,9 +36,9 @@ class Table:
         
     def get_name(self):
         return self.__table_name
-
-    def set(self, row):
-        row_obj = Row(table = self, value = row)
+    
+    def set(self, data):
+        row_obj = Row(table = self, value = data)
         if row_obj.row_exists() and self.table_metadata.enable_overwrite == "false":
             raise RowExists(message = "this row is already exists and can't overwrite")
         elif row_obj.row_exists():
@@ -46,16 +46,53 @@ class Table:
             old_row.delete()
         row_obj.serialize()
 
-    
-    def get(self):
-        pass
-    
-    def delete(self):
-        pass
+    def get_similar_primarykeys(self, query):
+        primarykeys = []
+        for index_name in query:
+            if index_name in self.table_metadata.index_keys:
+                primarykeys = self.table_metadata.indicies[index_name].get_primary_key(index_value = query[index_name])
+                if not len(primarykeys):
+                    return None
+                break
+        return primarykeys
+ 
+    def get(self, query):
+        Row.colomns_name_validate(self, query)
+        primarykeys = []
+        if self.table_metadata.primary_key in query : # if primarykey in the query
+            primarykeys.append(query[self.table_metadata.primary_key])     
+        else:
+            primarykeys = self.get_similar_primarykeys(query = query)
+            if primarykeys is None:
+                return []
+            elif len(primarykeys) == 0:
+                primarykeys = Row.get_all_primary_keys(self)# compare all data in the table with the query
+        row_objects = self.get_rows(primarykeys)
+        return Table.filter_by_query(row_objects = row_objects, query = query)
+
+    def get_rows(self, primarykeys):
+            row_objects = []
+            for primarykey in primarykeys:
+               row = Row.load_by_primary_key(self, primarykey)
+               if row is not None: row_objects.append(row)
+            return row_objects
+            
+    @staticmethod
+    def filter_by_query(row_objects, query):
+        filtered_objects = []
+        for row_object in row_objects:
+            if row_object.has_attributes(query = query):
+                filtered_objects.append(row_object)
+        return filtered_objects
+
+    def delete(self, query):
+        rows_obj = self.get(query)
+        for row in rows_obj:
+            row.delete()
     
     def __table_name_validate(self):
         if not os.path.isdir(self.get_path()):
             raise TableNotExist(message = "the database name you entered is not valid or database is not exist")
-    
-    def get_primary_keys(self):
-        return os.listdir(self.get_path())
+
+    def get_Data_path(self):
+        return os.path.join(self.get_path(), "Data")
