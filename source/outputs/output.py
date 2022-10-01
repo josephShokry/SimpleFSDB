@@ -2,7 +2,7 @@ from outputs.status import Status
 
 class outputs:
     def __init__(self,exception = None, result = None):
-        self.result = result
+        self.result = str(result)
         if exception != None:
             self.message = str(exception)
             self.status =  exception.status
