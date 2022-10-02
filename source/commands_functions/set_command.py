@@ -17,7 +17,7 @@ class SetCommand(AbtractCommand):
     @staticmethod
     def __validate_value(value):
         try:
-            json_obj = json.loads(value)
+            json_obj = eval(value)
         except:
             raise WrongInput(message = "the value json in not valid")
         return json_obj

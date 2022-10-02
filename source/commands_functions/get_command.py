@@ -14,7 +14,7 @@ class GetCommand(AbtractCommand):
         if query is None or query.isspace() or not len(query):
             query = "{}"
         try:
-            self.query = json.loads(query)
+            self.query = eval(query)
         except:
             raise WrongInput(message = "the query json in not valid")
  
